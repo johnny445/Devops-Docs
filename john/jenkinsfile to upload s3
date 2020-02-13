@@ -1,0 +1,13 @@
+node {
+    stage ('get code') {
+        git 'https://github.com/sekhar22/maven-simple.git'
+    }
+    stage ('buld') {
+        def mvnHome = tool name: 'maven',type: 'maven'
+        sh "${mvnHome}/bin/mvn clean install package"
+    }
+    stage ('deploy to s3') {
+       s3Upload consoleLogLevel: 'INFO', dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'sekhars3', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: 'target/*.jar', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'SUCCESS', profileName: 's3 jobs', userMetadata: []
+    }
+    
+}
