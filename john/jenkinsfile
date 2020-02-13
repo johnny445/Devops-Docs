@@ -1,0 +1,12 @@
+node { 
+    stage ('get code') {
+        git 'https://github.com/sekhar22/game-of-life.git'
+    }
+    stage ('buid') {
+        def mvnHome = tool 'maven'
+        sh "${mvnHome}/bin/mvn package"
+    }
+    stage ('deploy') {
+        deploy adapters: [tomcat9(credentialsId: '3841fce4-967f-4860-a55c-26a1fd74039f', path: '', url: 'http://13.59.69.51:9090')], contextPath: 'newjenkins', war: '**/*.war'
+    }
+}
