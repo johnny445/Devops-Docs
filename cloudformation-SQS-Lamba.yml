@@ -1,0 +1,209 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: SQS Queue with Lambda Trigger
+
+Parameters:
+
+  LambdaS3BucketName:
+    Type: String
+    Description: S3 Bucket Name holding the Lambda Function Package
+
+  LambdaS3Key:
+    Type: String
+    Description: S3 Key to the Lambda Function Package
+
+  LambdaHandler:
+    Type: String
+    Description: The Lambda Handler
+
+  LambdaDescription:
+    Type: String
+    Description: Lambda Handler for Cognito Testing
+
+  LambdaRuntime:
+    Type: String
+    Description: The Lambda Function Runtime
+    AllowedValues:
+      - dotnetcore2.1
+      - go1.x
+      - nodejs6.10
+      - nodejs8.10
+      - java8
+      - powershell
+      - python2.7
+      - python3.6
+      - python3.7
+      - ruby2.5
+
+  LambdaMemorySize:
+    Type: Number
+    Description: The Lambda Function Memory Size
+    Default: 512
+    MinValue: 128
+    MaxValue: 3008
+
+  LambdaTimeout:
+    Type: Number
+    Description: The Lambda Function Timeout in Seconds
+    Default: 60
+    MinValue: 30
+    MaxValue: 900
+
+  PowerShellFunctionHandler:
+    Type: String
+    Default: ''
+    Description: PowerShell Function Name for Lambda Handler. Ignored if Runtime is not set to powershell.
+
+  UsePowerShellFunctionHandler:
+    Type: String
+    Description: Set to Yes if you require the PowerShell Function Handler
+    Default: 'No'
+    AllowedValues:
+      - 'No'
+      - 'Yes'
+
+  SQSQueueArn:
+    Type: String
+    Description: SQS Queue Arn for the Lambda Function subscription
+
+  SQSBatchSize:
+    Type: Number
+    Description: The number of SQS Messages to send to the Lambda Function
+    Default: 10
+    MinValue: 1
+    MaxValue: 10
+
+Metadata:
+
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: AWS Lambda Configuration
+        Parameters:
+          - LambdaS3BucketName
+          - LambdaS3Key
+          - LambdaHandler
+          - LambdaDescription
+          - LambdaRuntime
+          - LambdaMemorySize
+          - LambdaTimeout
+      -
+        Label:
+          default: PowerShell Lambda
+        Parameters:
+          - PowerShellFunctionHandler
+          - UsePowerShellFunctionHandler
+      -
+        Label:
+          default: SQS Queue Source Trigger
+        Parameters:
+          - SQSQueueArn
+          - SQSBatchSize
+    ParameterLabels:
+      LambdaS3BucketName:
+        default: S3 Bucket Name
+      LambdaS3Key:
+        default: S3 Key
+      LambdaHandler:
+        default: Handler
+      LambdaDescription:
+        default: Description
+      LambdaRuntime:
+        default: Runtime
+      LambdaMemorySize:
+        default: Memory Size
+      LambdaTimeout:
+        default: Timeout
+      PowerShellFunctionHandler:
+        default: PowerShell Function Handler
+      SQSQueueArn:
+        default: SQS Queue Arn
+      SQSBatchSize:
+        default: Batch Size
+      UsePowerShellFunctionHandler:
+        default: Use PowerShell Function Handler
+
+Conditions:
+
+  IsPowerShellLambda: !Equals [!Ref LambdaRuntime, 'powershell']
+
+  UsePowerShellFunctionHandler: !And
+  - !Equals [!Ref LambdaRuntime, 'powershell']
+  - !Equals [!Ref UsePowerShellFunctionHandler, 'Yes']
+
+Resources:
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Ref LambdaS3BucketName
+        S3Key: !Ref LambdaS3Key
+      Description: !Ref LambdaDescription
+      Handler: !Ref LambdaHandler
+      MemorySize: !Ref LambdaMemorySize
+      Environment:
+        Variables:
+          AWS_POWERSHELL_FUNCTION_HANDLER: !If [UsePowerShellFunctionHandler, !Ref PowerShellFunctionHandler, !Ref 'AWS::NoValue']
+      Role: !GetAtt LambdaFunctionRole.Arn
+      Runtime: !If [IsPowerShellLambda, 'dotnetcore2.1', !Ref LambdaRuntime]
+      Timeout: !Ref LambdaTimeout
+
+  LambdaFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: LambdaRole
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  - cloudwatch:PutMetricData
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                  - logs:PutLogEvents
+                Resource: '*'
+              -
+                Effect: Allow
+                Action:
+                  - s3:GetObject*
+                  - s3:ListBuckets
+                Resource: '*'
+              -
+                Effect: Allow
+                Action:
+                  - sqs:GetQueueAttributes
+                  - sqs:DeleteMessage
+                  - sqs:ReceiveMessage
+                Resource: !Ref SQSQueueArn
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${LambdaFunction}'
+      RetentionInDays: 14
+
+  SQSTrigger:
+    Type: AWS::Lambda::EventSourceMapping
+    DependsOn:
+      - LogGroup
+    Properties:
+      BatchSize: !Ref SQSBatchSize
+      Enabled: true
+      EventSourceArn: !Ref SQSQueueArn
+      FunctionName: !Ref LambdaFunction
