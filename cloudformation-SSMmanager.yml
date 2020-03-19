@@ -1,0 +1,23 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: "Systems Manager Association"
+
+Resources:
+
+  Association:
+    Type: AWS::SSM::Association
+    Properties:
+      AssociationName: AssociationName
+      Name: AWS-RunPowerShellScript
+      Parameters:
+        commands:
+          - |
+            Write-Host 'This is some embedded PowerShell!'
+        executionTimeout:
+          - '300'
+      ScheduleExpression: 'rate(1 day)'
+      Targets:
+        - Key: 'tag:Service'
+          Values:
+            - 'ServiceName'
