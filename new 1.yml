@@ -1,0 +1,75 @@
+SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VPC
+    SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0
+		
+		
+		
+InstanceSecurityGroup:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+      GroupDescription: Allow http to client host
+      VpcId:
+         Ref: VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0	
+
+
+            - 'sudo apt-get update -y'
+            - "\n"
+            - 'sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common'
+            - "\n"
+            - 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
+            - "\n"
+            - 'sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
+            - "\n"
+            - 'sudo apt-get update -y'
+            - "\n"
+            - 'sudo apt install docker.io -y'
+            - "\n"
+            - 'apt list -a docker.io'
+            - "\n"
+            - 'sudo apt install docker.io=5:18.09.6~3-0~ubuntu-bionic'
+            - "\n"
+            - 'sudo usermod -aG docker ubuntu'
+            - "\n"
+            - 'sudo systemctl status docker'
+            - "\n"
+            - 'apt-get update -y'		
+		
+		
+		
+  DbSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Sub
+      - "${AWS::Region}${AZ}"
+      - AZ: !Select [0, !Ref VpcAzs]
+    VpcId: !Ref VPC
+    CidrBlock: !Select [0, !Ref DbSubnetIpBlocks]
+  DbSubnet2: 
+    Type: AWS::EC2::Subnet
+    Properties:
+     AvailabilityZone: !Sub
+      - "${AWS::Region}${AZ}"
+      - AZ: !Select [1, !Ref VpcAzs]
+    VpcId: !Ref VPC
+    CidrBlock: !Select [1, !Ref DbSubnetIpBlocks]
+	

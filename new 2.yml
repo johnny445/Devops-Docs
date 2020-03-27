@@ -1,0 +1,93 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Jenkins executor autoscaling group
+Parameters:
+  ImageId:
+    Description: Base AMI to launch from
+    Type: String
+  DesiredCapacity:
+    Description: Desired number of executors to launch
+    Type: String
+    Default: '1'
+  InstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: m3.medium
+    AllowedValues:
+    - m3.medium
+    - m3.large
+    - m3.xlarge
+    ConstraintDescription: must be a valid EC2 instance type.
+Resources:
+  ASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones:
+      - us-east-1a
+      HealthCheckType: EC2
+      LaunchConfigurationName:
+        Ref: LaunchConfig
+      DesiredCapacity:
+        Ref: DesiredCapacity
+      MinSize: 1
+      MaxSize: 5
+      Tags:
+      - Key: Name
+        Value: executor
+        PropagateAtLaunch: 'true'
+  LaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId:
+        Ref: ImageId
+      InstanceType:
+        Ref: InstanceType
+      KeyName: jenkins-user
+      SecurityGroups:
+      - jenkins-executor
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: '120'
+      UserData:
+        Fn::Base64:
+          Fn::Join:
+          - ''
+          - - "#!/bin/bash -e\n"
+            - "\n"
+            - 'DOCKER_VERSION=''1.11.2-0~trusty''
+
+'
+            - "\n"
+            - 'echo "Installing Docker"
+
+'
+            - 'apt-get update
+
+'
+            - 'apt-get install -y apt-transport-https ca-certificates
+
+'
+            - 'apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys
+              58118E89F3A912897C070ADBF76221572C52609D
+
+'
+            - 'echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" |
+              tee /etc/apt/sources.list.d/docker.list
+
+'
+            - 'apt-get update
+
+'
+            - 'apt-get purge lxc-docker || true
+
+'
+            - 'apt-get install -y linux-image-extra-$(uname -r) apparmor
+
+'
+            - 'apt-get install -y docker-engine=$DOCKER_VERSION
+
+'
+            - 'usermod -aG docker ubuntu
+
+'
