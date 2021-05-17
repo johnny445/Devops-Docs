@@ -1,0 +1,121 @@
+Hi good morning
+my self Johnson
+currently i am working for Beboin info pvt ltd
+i am a part of build and release process 
+i am working on devops tools like git,jenkins,ansible,maven,docker,kubernetes.
+these tools are integrated with jenkins using jenkins plugins
+coming to cloud side i have experience on aws
+i am working on multiple aws services like ec2,s3,vpc,cloud watch,iam,sns, auto scsling, load balancers.
+coming to roles and responsibilities creating and maintain jenkins jobs like free style jobs,pipeline jobs
+set up ci cd proces using webhooks on git
+Deploy resources using infrastructure as code
+Manage CI/CD pipelines across multiple deployment tools
+
+
+my self johnson
+currently iam working for Beboin info pvt ltd
+as part of my role, i am responsible to setup and manage devops ci/cd pipelines
+i have used various devops tools like Git,jenkins,ansible,docker,maven,nginx,apache,tomcat,sonarqube,nexus,kubernetes
+git:
+#enable branching strategies - dev,QA,PreProd,Prod we create
+managing git repositories using various git commands like (push,pull,merge,clone,branch,rebase)
+jenkins:
+setting jenkins server
+master and slave configuration
+managing cicd jobs
+managing jenkins plugins
+integrating other devops tools like git,maven,sonarqube,nexus,ansible
+ansible: 
+setting up the ansible control server
+writing playbooks
+managing ansible hosts
+docker: 
+setup docker environment
+writing docker files
+creating custom images
+creating and managing conatiners
+#setting up private docker registry
+kubernetes:
+set up kubernetes environment on aws or on-premises
+writing deployment files and service files
+managing containers on pods
+managing kubernetes nodes
+
+
+scripted pipeline for maven and sonar 
+
+node {
+  stage('SCM') {
+    git 'https://github.com/foo/bar.git'
+  }
+  stage('SonarQube analysis') {
+    withSonarQubeEnv('My SonarQube Server') {
+      sh 'mvn clean package sonar:sonar'
+    } // submitted SonarQube taskId is automatically attached to the pipeline context
+  }
+}
+  
+// No need to occupy a node
+stage("Quality Gate"){
+  timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+    if (qg.status != 'OK') {
+      error "Pipeline aborted due to quality gate failure: ${qg.status}"
+    }
+  }
+}
+
+Customise official Jenkins Docker image, by executing below two steps:
+
+a.Create Dockerfile with the following content:
+
+FROM jenkins/jenkins:2.277.4-lts-jdk11
+USER root
+RUN apt-get update && apt-get install -y apt-transport-https \
+       ca-certificates curl gnupg2 \
+       software-properties-common
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+RUN apt-key fingerprint 0EBFCD88
+RUN add-apt-repository \
+       "deb [arch=amd64] https://download.docker.com/linux/debian \
+       $(lsb_release -cs) stable"
+RUN apt-get update && apt-get install -y docker-ce-cli
+USER jenkins
+RUN jenkins-plugin-cli --plugins "blueocean:1.24.6 docker-workflow:1.26"
+
+b.Build a new docker image from this Dockerfile and assign the image a meaningful name, e.g. "myjenkins-blueocean:1.1":
+
+docker build -t myjenkins-blueocean:1.1 .
+
+Run your own myjenkins-blueocean:1.1 image as a container in Docker using the following docker run command:
+
+docker run \
+  --name jenkins-blueocean \
+  --rm \
+  --detach \
+  --network jenkins \
+  --env DOCKER_HOST=tcp://docker:2376 \
+  --env DOCKER_CERT_PATH=/certs/client \
+  --env DOCKER_TLS_VERIFY=1 \
+  --publish 8080:8080 \
+  --publish 50000:50000 \
+  --volume jenkins-data:/var/jenkins_home \
+  --volume jenkins-docker-certs:/certs/client:ro \
+  --volume "$HOME":/home \
+  myjenkins-blueocean:1.1 
+
+
+
+
+
+
+
+NAGARRO Inrerview Questions
+
+git branching strategy
+s3 lifecycle policy
+jenkins architecture
+docker context
+maven versioning
+maven life cycle u r using
+difference between application load balancer and network load balancer

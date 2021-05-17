@@ -1,0 +1,574 @@
+Current Project 
+Name: sales information system
+Client: Wintel Software’s, USA 
+car rental service
+ 
+The software offers lots of useful features where you can find car rental tracking, driver management, 
+location mapping, billing & invoicing, fines management, inventory management, and many more features 
+for your car rental business. Drivers and passengers can easily communicate through this software. 
+The driver can locate the customers and the customer can locate the driver’s position. The software 
+also offers real-time reporting feature where you can track your business activities. You can easily 
+track your car status through this software so if you are using this software, there is not an issue 
+of vehicle theft.
+
+PAYTM INTERVIEW QUESTIONS
+
+1)Difference between daemonset and deployment?:
+3 different resources that Kubernetes provides for deploying pods.
+1.Deployments
+2.StatefulSets
+3.DaemonSets
+Deployments:
+Kubernetes deployments manage stateless services running on your cluster (as opposed to for example StatefulSets which do manage stateful 
+services). Their purpose is to keep a set of identical pods running and upgrade them in a controlled way. For example, you define how many 
+replicas(pods) you want to run of your app in deployment definition and kubernetes will make that many replicas of your application spread 
+over nodes. If you say 5 replica's over 3 node then some nodes have more than one replica of your app running.
+DaemonSets:
+DaemonSets manage groups of replicated Pods. However, DaemonSets attempt to adhere to a one-Pod-per-node model, either across the entire 
+cluster or a subset of nodes. Daemonset will not run more than one replica per node. Another advantage of using Daemonset is, If you add 
+a node to the cluster then Daemonset will automatically spawn pod on that node, which deployment will not do.
+DaemonSets are useful for deploying ongoing background tasks that you need to run on all or certain nodes, and which do not require user 
+intervention. Examples of such tasks include storage daemons like ceph, log collection daemons like fluentd, and node monitoring daemons 
+like collectd.
+
+2)How to set environment variables in a Jenkins Scripted Pipeline?:
+Jenkinsfile (Scripted Pipeline)
+
+  node {
+      withEnv(['DISABLE_AUTH=true',
+               'DB_ENGINE=sqlite']) {
+          stage('Build') {
+              sh 'printenv'
+          }
+      }
+  }
+Your script should look something like the following:
+
+  node('my-label') {
+      withEnv(['value=World']) {
+           stage('Test') {
+               sh 'echo Hello, ${value}'
+           }
+      }
+  }
+3)How to use parameters in a Jenkins Scripted Pipeline?:
+node {
+  properties(
+    [
+        parameters(
+            [string(defaultValue: '/data', name: 'Directory'),
+             string(defaultValue: 'Dev', name: 'DEPLOY_ENV')]
+            )
+
+    ]
+    )    
+
+  ....
+} 
+4)How to clone git repository using jenkins scripted pipeline?:
+node {
+    stage ('checkout') {
+        git url: 'git@github.devops.mycompany.local:Org/MyLargeRepo.git'
+    }
+} 
+5)jenkins master slave config to run scripted pipeline job on node how to do it?:
+Scripted pipeline:
+node (label: 'slave') {
+    ...
+}
+6)Difference between nacl and security group?:
+The difference between Security Group and ACLs is that, Security Group act as a firewall for associated Amazon EC2 instances, 
+controlling both inbound and outbound traffic at the instance level, while ACLs act as a firewall for associated subnets, 
+controlling both inbound and outbound traffic at the subnet level.
+What is a Security Group?:
+It adds a security layer to EC2 instances that control both inbound and outbound traffic at the instance level.
+It supports only allow rules, and by default, all the rules are denied. You cannot deny the rule for establishing a connection.
+It is a stateful means that any changes made in the inbound rule will be automatically reflected in the outbound rule. For example, 
+If you are allowing an incoming port 80, then you also have to add the outbound rule explicitly.
+It is associated with an EC2 instance.
+Maximum number of rules that can exist per Security Group: 50
+Maximum number of Security Groups that can exist per instance: 5
+Maximum number of rules that can exist per instance: 5*50 + 20 = 270
+What is NACL?:
+NACL also adds an additional layer of security associated with subnets that control both inbound and outbound traffic at the subnet level.
+It supports both allow and deny rules, and by default, all the rules are denied. You need to add the rule which you can either 
+allow or deny it.
+It is a stateless means that any changes made in the inbound rule will not reflect the outbound rule, i.e., you need to add the 
+outbound rule separately. For example, if you add an inbound rule port number 80, then you also have to explicitly add the outbound rule.
+It is associated with a subnet.
+Maximum number of rules that exist per NACL: 2
+7)what is deamon set?:
+A DaemonSet is a controller that ensures that the pod runs on all the nodes of the cluster. If a node is added/removed from a cluster, 
+DaemonSet automatically adds/deletes the pod.
+a DaemonSet manages groups of replicated Pods. However, DaemonSets attempt to adhere to a one-Pod-per-node model, 
+either across the entire cluster or a subset of nodes.
+8)Difference between ingress and services in kubernetes?:
+What is Ingress? :
+Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster. Traffic routing is controlled by 
+rules defined on the Ingress resource.
+what is service?:
+An abstract way to expose an application running on a set of Pods as a network service.
+With Kubernetes you don't need to modify your application to use an unfamiliar service discovery mechanism. Kubernetes gives Pods 
+their own IP addresses and a single DNS name for a set of Pods, and can load-balance across them.
+
+jenkins scripted pipeline
+  env varibles
+  parameters
+  git clone repo
+jenkins master slave config to run scripted pipeline job on node how to do it?  
+kubernetes workload
+difference between ingress and services
+what is deamon set
+difference between deamon set and deployment?
+aws load balancer 3 applications running on 3 servers one server get cpu utilization high how to debug that issue?
+difference between nacl and security group?
+if a ip hit continuously so we need to block that ip how it will do?
+
+
+
+1)Difference between EFS and EBS?:
+Amazon EBS:
+Every server needs a drive. EBS is essentially a cloud-based storage for the drives of your virtual machines. EBS is designed to 
+store data in blocks attached to an Amazon EC2 instance, similar to a local disk drive on your physical machine. You need to mount 
+EBS onto an Amazon EC2 instance.
+Amazon EFS:
+EFS is on the other hand automatically scalable — this means that you need not to be worried about your running applications as there 
+won’t be any problems even if the workload suddenly becomes higher — the storage will automatically scale itself. Now, if the workload 
+decreases — the storage will itself scale down, so that you don’t pay anything for the part of storage that you don’t use.
+Key differences:
+Storage Type:
+EBS: Block Storage.
+EFS: Object storage.
+Performance:
+EBS: Hardly scalable.
+• Manually scale the size of the volumes without stopping instance.
+• Baseline performance of 3 IOPS per GB for General Purpose volume.
+• Use Provisioned IOPS for increased performance.
+EFS: Scalable.
+• Highly Scalable Managed Service.
+• Supports up to 7000 file system operations per second.
+Data Stored:
+EBS:
+• Data stored stays in the same Availability zone.
+• Replicas are made within the AZ for higher durability.
+EFS:
+• Data stored in AWS EFS stays in the region.
+• Replicas are made within the region.
+Data Access:
+EBS: Can only be accessed by a single Amazon EC2 instance.
+EFS: Can be accessed by 1 to 1000s of EC2 instances from multiple AZs, concurrently.
+Storage Size:
+EBS: Maximum storage size of 16 TB.
+EFS: No limitation on the size of the file system.
+
+2)Difference between IAM user and IAM Role?:
+An IAM user has permanent long-term credentials and is used to directly interact with AWS services. 
+whereas IAM users refers to each user having a separate account within the root account. User is allowed to 
+access a particular service of AWS root account based on the policies(permissions) it carries or based on the 
+groups to which it is a member of.
+IAM roles can be applied to AWS entities such as S3, EC2, etc. where in entities can communicate between 
+each other without the need of additional credentials.
+3)How to copy jenkins jobs one server to another?:  
+Job import plugin can be used to copy jobs from other jenkins instance.
+https://plugins.jenkins.io/job-import-plugin/
+4) What are Parameters in Jenkins?:
+Answer: Parameters are supported by the Agent section and are used to support various use-cases pipelines. 
+Parameters are defined at the top-level of the pipeline or inside an individual stage directive.
+5)what is Docker?:
+Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Containers 
+allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, 
+and deploy it as one package.
+6)Difference between Amazon RDS, DynamoDB and Redshift?:
+RDS is meant for structured data only. DynamoDB is meant for unstructured data which is a NoSQL service. 
+Redshift is a data warehouse product used for data analysis.
+7)What is CloudFront?:
+Ans: Amazon CloudFront is a service that speeds up transfer of your static and dynamic web content such as HTML files, IMAGE files., etc., 
+CloudFront delivers your particulars thru worldwide data centers named Edge Locations.
+8)What is a Hypervisor?:
+A Hypervisor is a kind of software that enables Virtualization. It combines physical hardware resources into a platform which is delivered 
+virtually to one or more users. XEN is the Hypervisor for EC2.
+9)What is the feature of ClassicLink?:
+Ans: ClassicLink allows instances in EC2 classic platform to communicate with instances in VPC using Private IP address. EC2 classic 
+platform instances cannot not be linked to more than one VPC at a time.
+10)What is the use of Connection Draining?:
+Ans: Connection Draining is a service under Elastic Load Balancing. It keeps monitoring the healthiness of the instances. If any instance 
+fails Connection Draining pulls all the traffic from that particular failed instance and re-route the traffic to other healthy instances.
+11)how many types of inventory files in ansible?:
+In Ansible, there are two types of inventory files: Static and Dynamic. Let's have a look at each one of these and see how we can manage 
+them. By now, we assume that you have already installed Ansible on your Control node, and configured Passwordless SSH connection to your 
+managed hosts.
+Static Host Inventory File:In Ansible, a static inventory file is a plain text file that contains a list of managed hosts declared 
+under a host group using either hostnames or IP addresses.
+Dynamic Host Inventory File:A dynamic inventory is a script written in Python, PHP or any other programming language. It comes in 
+handy in cloud environments such as AWS where IP addresses change once a virtual server is stopped and started again.
+
+12) What are kubernetes pods?:
+Pods in Kubernetes are the smallest and most basic deployable objects. A Pod represents a single instance of a running process in your 
+cluster. It can contain one or more containers.
+13)What are Daemon sets?:
+A DaemonSet ensures that Nodes run a copy of a Pod i.e. if nodes are added then a new pod is created and if nodes are removed then 
+those Pods are collected in the garbage.
+14)What is the LoadBalancer in Kubernetes?:
+A load balancer performs the distribution of network traffic across multiple servers to optimize performance and ensure the reliability 
+of an application.
+15)What are the types in cloudwatch?:
+There are 2 types in cloudwatch. Basic monitoring and detailed monitoring. Basic monitoring is free and detailed monitoring is chargeable.
+Differentiate Basic and Detailed monitoring in cloud watch?:
+Basic Monitoring:Basic monitoring sends data points to Amazon cloud watch every five minutes for a limited number of preselected metrics at no charge.
+Detailed Monitoring: Detailed monitoring sends data points to amazon CloudWatch every minute and allows data aggregation for an additional charge. 
+16)What are the cloudwatch metrics that are available for EC2 instances?:
+Diskreads, Diskwrites, CPU utilization, networkpacketsIn, networkpacketsOut, networkIn, networkOut, CPUCreditUsage, CPUCreditBalance.
+17)What are the different storage classes in S3?:
+Following are the types of storage classes in S3,
+
+1.Standard frequently accessed
+2.Standard infrequently accessed
+3.One-zone infrequently accessed.
+4.s3-Glacier
+5.RRS – reduced redundancy storage
+18)What is glacier?:
+Glacier is the back up or archival tool that you use to back up your data in S3.
+19)How can you secure the access to your S3 bucket?:
+There are two ways that you can control the access to your S3 buckets,
+
+1.ACL – Access Control List
+2.Bucket polices
+20)How can you encrypt data in S3?:
+You can encrypt the data by using the below methods,
+
+1.Server Side Encryption – S3 (AES 256 encryption)
+2.Server Side Encryption – KMS (Key management Service)
+3.Server Side Encryption – C (Client Side)
+21) What are the parameters for S3 pricing?:
+The pricing model for S3 is as below,
+
+1.Storage used
+2.Number of requests you make
+3.Storage management
+4.Data transfer
+5.Transfer acceleration
+22)What is the pre-requisite to work with Cross region replication in S3?:
+You need to enable versioning on both source bucket and destination to work with cross region replication. 
+Also both the source and destination bucket should be in different region.
+23)What are AWS IAM roles?:
+Roles are used to provide permissions to entities that you trust within your AWS account. Roles are users in another account. 
+Roles are similar to users but with roles you do not need to create any username and password to work with the resources.
+24)What is the maximum individual archive that you can store in glacier?:
+You can store a maximum individual archive of upto 40 TB.
+25)What is VPC?:
+VPC stands for Virtual Private Cloud. VPC allows you to easily customize your networking configuration. 
+VPC is a network that is logically isolated from other network in the cloud. It allows you to have your own IP address range,
+subnets, internet gateways, NAT gateways and security groups.
+26)What is VPC peering connection?:
+VPC peering connection allows you to connect 1 VPC with another VPC. Instances in these VPC behave as if they are in the same network.
+27)What are the different types of storage gateway?:
+Following are the types of storage gateway.
+
+1.File gateway
+2.Volume gateway
+3.Tape gateway
+28) What are the types of routing polices in route53?:
+Following are the types of routing policies in route53,
+
+1.Simple routing
+2.Latency routing
+3.Failover routing
+4.Geolocation routing
+5.Weighted routing
+6.Multivalue answer
+29)What is the maximum size of messages in SQS?:
+The maximum size of messages in SQS is 256 KB.
+30) What is ELB?:
+ELB stands for Elastic Load balancing. ELB automatically distributes the incoming application traffic or network traffic 
+across multiple targets like EC2, containers, IP addresses.
+31)What is the difference between the classic load balancer and application load balancer?:
+Dynamic port mapping, multiple port multiple listeners is used in Application Load Balancer, One port one listener is achieved 
+via Classic Load Balancer.
+32)What is meant by subnet?:
+ A large section of IP Address divided in to chunks are known as subnets.
+33)Explain Cloud Service Models?:
+SAAS (Software as a Service): It is software distribution model in which application are hosted by a vendor over the internet 
+for the end user freeing from complex software and hardware management. 
+(Ex: Google drive, drop box)
+PAAS (Platform as a Service): It provides platform and environment to allow developers to build applications. 
+It frees developers without going into the complexity of building and maintaining the infrastructure. 
+(Ex: AWS Elastic Beanstalk, Windows Azure)
+IAAS (Infrastructure as a Service): It provides virtualized computing resources over the internet like 
+cpu, memory, switches, routers, firewall, Dns, Load balancer 
+(Ex: Azure, AWS)
+34)What is the way to access shell environment variables in Ansible?:
+In Ansible, if you want to access existing variables, the user needs to use the ‘env’ lookup plugin. Example, 
+to access the value of the Office environment on the management machine.
+You need to write following code:
+---
+# ...
+vars:
+local_home: "{{ lookup('env','Office') }}"
+I
+{{ ansible_env.SOME_VARIABLE }}
+35)Explain how you can copy file recursively onto a target host?:
+The "copy" module has a recursive parameter. However, if you want this to perform more efficient for a large number of files, 
+then “synchronize” module is the best option for you.
+36)What is stateful and stateless in Kubernetes?:
+A stateless application is one which depends on no persistent storage. ... A stateful application, on the other hand, has 
+several other parameters it is supposed to look after in the cluster. There are dynamic databases which, even when the app 
+is offline or deleted, persist on the disk.
+37)Explain what an ask_pass module is?:
+It’s a playbook control module used to control a password prompt. It’s set to True by default.
+38)How do you keep data secret in a playbook?:
+If you want to keep secret data but still be able to share it publicly, then use Vault in playbooks. 
+But if you’re using –v (verbose) mode and don’t want anyone to see the results, then use.
+
+name: secret task
+
+shell: /usr/bin/do_something --value={{ secret_value }}
+
+no_log: True
+
+Ansible copy multiple files at once:
+- name: copy rundeck files
+copy: src=/project/devops/{{ item }} dest=/etc/rundeck/
+with_items:
+- rundeck.conf
+- rundeck.properties
+- rundeck.key
+
+Ansible copy multiple files to multiple destinations:
+- name: ansible copy multiple files
+copy: src={{ item.src }} dest={{ item.dest }}
+with_items:
+- { src: '/project/jboss.conf', dest: '/etc/jboss' }
+- { src: '/project/rundeck.conf', dest: '/etc/rundeck' }
+- { src: '/project/httpd.conf', dest: '/etc/httpd' }
+
+39)What is IaaS?:
+Answer:IaaS is a cloud service that runs services on “pay-for-what-you-use” basis
+IaaS workers include Amazon Web Services, Microsoft Azure and Google Compute Engine
+Users: IT Administrators
+
+40) What is PaaS?:
+Answer:PaaS runs cloud platforms and runtime environments to develop, test and manage software
+Users: Software Developers
+
+41) What is SaaS?:
+Answer:In SaaS, cloud workers host and manage the software application on a pay-as-you-go pricing model
+Users: End Customers
+42)jenkins pipeline using sonarqube?:
+stage('SonarCloud') {
+  environment {
+    SCANNER_HOME = tool 'SonarQubeScanner'
+    ORGANIZATION = "igorstojanovski-github"
+    PROJECT_NAME = "igorstojanovski_jenkins-pipeline-as-code"
+  }
+  steps {
+    withSonarQubeEnv('SonarCloudOne') {
+        sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION \
+        -Dsonar.java.binaries=build/classes/java/ \
+        -Dsonar.projectKey=$PROJECT_NAME \
+        -Dsonar.sources=.'''
+    }
+  }
+}
+
+You can also add a quality gate stage that will fail the build if results were under a defined threshold. 
+This would need to be placed after the last stage that utilizes the sonar-scanner.
+
+stage("Quality Gate") {
+  steps {
+    timeout(time: 1, unit: 'MINUTES') {
+        waitForQualityGate abortPipeline: true
+    }
+  }
+}
+43)Difference between if and case statements?:
+if condition:
+    do option 1
+else:
+    do option 2
+ -------------------------------   
+select ch:48)
+    case 'a','e','i','o','u':
+        print "is a vowel"
+    case 'y':
+        print "never quite sure"
+    default:
+        print "is a consonant"    
+44)What is sticky session ELB in AWS?:
+However, you can use the sticky session feature (also known as session affinity), which enables the load balancer to bind a 
+user's session to a specific instance. ... This ensures that all requests from the user during the session are sent to the same instance.
+45)what is quorum in kubernetes?:
+so quorum (master node majority) can be maintained should one or more masters fail. In the HA scenario, Kubernetes will maintain 
+a copy of the etcd databases on each master, but hold elections for the control plane function leaders kube-controller-manager 
+and kube-scheduler to avoid conflicts.  
+46)What is target group in load balancer?:
+A target group tells a load balancer where to direct traffic to : EC2 instances, fixed IP addresses; or AWS Lambda functions, amongst others. 
+When creating a load balancer, you create one or more listeners and configure listener rules to direct the traffic to one target group.
+47)what is the use of docker host?:
+DockerHost:The Docker host provides a complete environment to execute and run applications. 
+It comprises of the Docker daemon, Images, Containers, Networks, and Storage. 
+48)What is meant by version control system?:
+Version control systems are software tools that help software teams manage changes to source code over time. ... 
+Version control software keeps track of every modification to the code in a special kind of database.   
+49)How to copy multiple files in one layer using a Dockerfile?:
+COPY README.md package.json gulpfile.js __BUILD_NUMBER ./
+or 
+COPY dir1/* dir2/* ./
+50)What is a POM XML file why it is used?:
+xml file. POM is an acronym for Project Object Model. The pom. xml file contains information of project and configuration information 
+for the maven to build the project such as dependencies, build directory, source directory, test source directory, plugin, goals etc.
+51)What is artifact in Maven project?:
+Artifact: An artifact is something that is either produced or used by a project. Examples of artifacts produced by Maven for a 
+project include: JARs, source and binary distributions, WARs.
+An artifact is a file, usually a JAR, that gets deployed to a Maven repository. A Maven build produces one or more artifacts, 
+such as a compiled JAR and a "sources" JAR. Each artifact has a group ID.
+52)What is difference between groupId and artifactId in Maven?:
+The main difference between groupId and artifactId in Maven is that the groupId specifies the id of the project group while the 
+artifactId specifies the id of the project. It is required to use third party libraries when developing a project.
+53)what is LABEL in Dockerfile?:
+A label is a key-value pair, stored as a string.
+Labels are used in Dockerfile to help organize your Docker Images. Labels are key-value pairs and simply adds custom metadata to 
+your Docker Images. ... You can use more than one labels in a Docker Image. Docker allows you to specify multiple labels in a single line.
+54)What is namespace in kubernetes?:
+Namespaces are a way to divide cluster resources between multiple users (via resource quota).
+Namespaces help pod-to-pod communication using the same namespace. Namespaces are virtual clusters that can sit on top of the same 
+physical cluster. They provide logical separation between the teams and their environments.
+55)Difference between docker swarm and kubernetes?:
+In Kubernetes, an application can be deployed using a combination of pods, deployments, and services (or micro-services).
+Kubernetes supports multiple versions of logging and monitoring when the services are deployed within the cluster:
+
+1.Elasticsearch/Kibana (ELK) logs within the container
+2.Heapster/Grafana/ Influx for monitoring in the container
+3.Sysdig cloud integration
+Docker Swarm, applications can be deployed as services (or micro-services) in a Swarm cluster. YAML files can be used to 
+specify multi-container. Moreover, Docker Compose can deploy the app.
+Docker Swarm is supported for only monitoring with the third party applications.
+Docker Swarm has an open API, it makes easier to connect with plenty of apps.
+56)what is local repository ,remote repository and central repository in maven?:
+Local Repository:
+The repository which resides in our local machine which are cached from the remote/central repository downloads and ready for the usage. 
+The folder to hold/place all the dependencies in local can be configured in the settings.xml file of the maven folder under the tag <localRepository>.
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 
+          http://maven.apache.org/xsd/settings-1.0.0.xsd">
+      
+      <localRepository>D:/m2repo</localRepository>
+</settings>
+Remote Repository:
+This repository as the name suggests resides in the remote server and which can be accessed by using different file 
+transfer protocols like file:// or http://. Remote repository will be used for both downloading and uploading the dependencies and artifacts.
+
+<repositories>
+      <repository>
+         <id>remote.repository</id>
+         <url>http://download.ogrname.com/maven2/</url>
+      </repository>
+</repositories>
+Central Repository:
+This is the repository provided by maven community. This repository contains large set of commonly used/required libraries 
+for any java project. Basically, internet connection is required if developers want to make use of this central repository. 
+But, no configuration is required for accessing this central repository.
+
+<repositories>
+      <repository>
+         <id>central.repository</id>
+         <url>http://repo1.maven.org/maven2/</url>
+      </repository>
+</repositories>
+57)What are the types of volumes in EBS?:
+Amazon EBS volume types are broken into two main categories: 
+SSD-backed volumes are optimized for IOPS, which are best for workloads involving frequent read/write operations with small I/O size.
+HDD-backed volumes are optimized for throughput (measured in MiB/s) for large streaming workloads. Cannot include boot volumes.
+Amazon EBS provides the following volume types: 
+1.General Purpose SSD ( gp2 and gp3 ) 
+2.Provisioned IOPS SSD ( io1 and io2 ) 
+3.Throughput Optimized HDD ( st1 )
+4.Cold HDD ( sc1 ) 
+5.Magnetic ( standard )
+1.General Purpose SSD (gp2): – general purpose, balances price and performance.
+Use cases: Most workloads such as virtual desktops, dev and test environments, and low-latency interactive apps.
+2.Provisioned IOPS SSD (io1): – highest-performance SSD volume for mission-critical low-latency or high-throughput 
+workloads that require sustained IOPS performance, or more than 16,000 IOPS or 250 MiB/s of throughout per volume.
+Use cases: Mission-critical applications, large database workloads such as MongoDB, Microsoft SQL Server, Cassandra, 
+Oracle, MySQL, and PostgreSQL
+3.Throughput Optimized HDD (st1): – low-cost HDD volume for frequently accessed workloads with high throughput.
+Use cases: Streaming workloads, big data, data warehouses, log processing.
+4.Cold HDD (sc1): – lowest cost HDD volume for less-frequently accessed workloads
+Use cases: Throughput-oriented storage for large volumes of data that is infrequently accessed
+58)what is docker network?:
+Docker networking allows you to attach a container to as many networks as you like. You can also attach an already running container.
+There are three common Docker network types – 1.bridge networks, used within a single host, 2.overlay networks, 
+for multi-host communication, and 3.macvlan networks which are used to connect Docker containers directly to host network interfaces.
+59)What are the three types of version control?:
+Types of Version Control Systems:
+1.Local Version Control Systems.
+2.Centralized Version Control Systems.
+3.Distributed Version Control Systems.
+60)What is git rebase?: 
+Rebasing is the process of moving or combining a sequence of commits to a new base commit.
+Rebasing is most useful and easily visualized in the context of a feature branching workflow.
+61)What is dynamic port mapping?:
+Dynamic port mapping allows you to run multiple tasks over the same host using multiple random host ports (in spite of defined host port). ... 
+An Application Load Balancer uses dynamic port mapping so that you can run multiple tasks from a single service on the same container instance.
+62)what is docker daemon?:
+The Docker daemon ( dockerd ) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. 
+A daemon can also communicate with other daemons to manage Docker services.
+63)difference between availability zone and region?:
+Each Region is a separate geographic area. Availability Zones are multiple, isolated locations within each Region.
+64)difference between fault tolerance and high availability?:
+A fault tolerant environment has no service interruption but a significantly higher cost, 
+while a highly available environment has a minimal service interruption.
+Fault-tolerant technology is a capability of a computer system, electronic system or network to deliver uninterrupted service, despite 
+one or more of its components failing. Fault tolerance also resolves potential service interruptions related to software or logic errors.
+65)what is docker context?:
+
+66)what is VPC endpoint?:
+A VPC endpoint allows you to privately connect your VPC to supported AWS services without requiring an Internet gateway, NAT device, 
+VPN connection, or AWS Direct Connect connection.
+67)Load balancing algorithms?:
+1. Round Robin method
+2. Weighted Round Robin
+3. Least Connection
+4. Weighted Least Connection
+5. Resource Based (Adaptive)
+6. Resource Based (SDN Adaptive)
+7. Fixed Weighting
+8. Weighted Response Time
+9. Source IP Hash
+10. URL Hash
+68)what is gather facts in ansible?:
+Ansible facts are data gathered about target nodes (host nodes to be configured) and returned back to controller nodes. 
+Ansible facts are stored in JSON format and are used to make important decisions about tasks based on their statistics. 
+Facts are in an ansible_facts variable, which is managed by Ansible Engine.
+69)What is the architecture of ansible?:
+Ansible is used to automate different networks, and it uses the simple, secure, and powerful agentless automation framework 
+for IT operations and development.
+Ansible is a radically simple IT automation engine that automates cloud provisioning, configuration management, application deployment, 
+intra-service orchestration, and many other IT needs.
+70)How do I supply variables while executing the playbook in ansible?:
+It is possible to set variables at the command line using the –extra-vars (or -e) argument. Variables can be defined using 
+a single quoted string (containing one or more variables) using one of the formats below. If you are passing variables from a file, 
+you need a second –extra-vars flag to pass variables.
+
+$ ansible-playbook release.yml --extra-vars "version=1.23.45 other_variable=foo"
+$ ansible-playbook release.yml -e "version=1.23.45 other_variable=foo"
+71)Explain about the tags in ansible?:
+Ansible tags are used to run only one or some specific tasks from a large playbook instead of running the whole playbook.
+Ansible runs or skips all tasks with tags that match the tags you pass at the command line. If you have added a tag at the block 
+or play level, with roles , or with an import, that tag applies to every task within the block, play, role, or imported role or file.
+72)How to execute failure playbook again?:
+Use that --limit command and it should retry from the failed task. The --limit @/home/user/site. 
+retry would not help in such a scenario, the . retry only stores the failed host and nothing more, 
+so will just execute all tasks against failed hosts.
+73)What is the purpose and location of ansible.cfg file?:
+This is the brain and the heart of Ansible, the file that governs the behavior of all interactions performed by the control node. 
+In Ansible's case that default configuration file is (ansible. cfg) located in /etc/ansible/ansible.
+74)What is the difference between group_vars & host_vars directory?:
+host_vars and groups_vars helps to manage host and group variables in more systematic way. Host and group variables can be stored in 
+individual files relative to the inventory file. These variable files are in YAML format.
+75)What is setup module used for?:
+This module is automatically called by playbooks to gather useful variables about remote hosts that can be used in playbooks. 
+It can also be executed directly by /usr/bin/ansible to check what variables are available to a host. Ansible provides many facts 
+about the system, automatically.
+76)

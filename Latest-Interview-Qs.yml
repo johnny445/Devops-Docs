@@ -1,0 +1,658 @@
+LATEST INTERVIEW QUESTIOS
+
+1) what is kernal version: 5.4
+Kernel is the heart of the operating system and facilitates interaction between hardwares and softwares.
+
+2) what is nginx version: 1.16
+3) what is port fowarding in nginx?: 
+sudo vi /etc/nginx/sites-available/default [On Debian/Ubuntu]
+sudo vi /etc/nginx/nginx.conf [On CentOS/RHEL]
+
+4)linux run levels?:
+RUN LEVEL     MODE                                      ACTION
+init0         Halt                                Shuts down system
+init1         Single-User Mode                    Does not configure network interfaces, start daemons, or allow non-root logins
+init2         Multi-User Mode                     Does not configure network interfaces or start daemons.
+init3         Multi-User Mode with Networking     Starts the system normally.
+init4         Undefined                           Not used/User-definable
+init5         X11                                 As runlevel 3 + display manager(X)
+init6         Reboot                              Reboots the system
+
+5) what are deployment strategies in kubernetes?:
+There are five types of Deployments in Kubernetes:
+recreate: terminate the old version and release the new one
+ramped: release a new version on a rolling update fashion, one after the other
+blue/green: release a new version alongside the old version then switch traffic
+canary: release a new version to a subset of users, then proceed to a full rollout
+a/b testing: release a new version to a subset of users in a precise way (HTTP headers, cookie, weight, etc.). 
+A/B testing is really a technique for making business decisions based on statistics but we will briefly describe the process. 
+This doesn’t come out of the box with Kubernetes, it implies extra work to setup a more advanced infrastructure 
+(Istio, Linkerd, Traefik, custom nginx/haproxy, etc).
+
+6)volume attach  linux:
+7)copy files to docker containers: 
+ sudo docker cp /home/(name)/(folder_name)/(file_name)  (container_id):/(to_the_place_you_want_the_file_to_be)
+
+8)how many containers can run in kubernetes pod:
+At the same time, a Pod can contain more than one container, usually because these containers are relatively tightly coupled.
+9) how many namespaces can created in kubernetes:
+
+10)how many services are there in kuberetes:
+Different types of Kubernetes services include: 
+1.Cluster IP service
+2.Node Port service
+3.External Name Creation service 
+4.Load Balancer service
+
+What is ClusterIP?:
+The ClusterIP is the default Kubernetes service that provides a service inside a cluster (with no external access) 
+that other apps inside your cluster can access. 
+What is NodePort?:
+The NodePort service is the most fundamental way to get external traffic directly to your service. 
+It opens a specific port on all Nodes and forwards any traffic sent to this port to the service.
+What is the LoadBalancer in Kubernetes?: 
+The LoadBalancer service is used to expose services to the internet. A Network load balancer, for example, 
+creates a single IP address that forwards all traffic to your service.
+11)how can we acess s3 bucket from ec2? :
+ Create role
+ Select AWS Service, and then choose EC2.
+ Create a custom policy that provides the minimum required permissions to access your S3 bucket. 
+ For instructions on creating custom policies, see Writing IAM policies: how to grant access to an 
+ Amazon S3 bucket and Managing access to S3 resources.
+ Select the instance that you want to attach the IAM role to.
+ Select the IAM role that you just created, and then choose Save. The IAM role is assigned to your EC2 instance.
+    Install the AWS CLI.
+  ##  aws s3 ls
+
+12)what is devops?:
+DevOps is a set of practices that combines software development and IT operations. 
+It aims to shorten the systems development life cycle and provide continuous delivery with high software quality. 
+DevOps is complementary with Agile software development; several DevOps aspects came from the Agile methodology. 
+13)what are ansible modules?:
+Ansible modules are reusable, standalone scripts that can be used by the Ansible API, or by the ansible or ansible-playbook programs.
+example:Ping Module,Setup Module,Copy Module,Yum Module,Shell Module,Service Module,Debug Module,Template Module,Include Module,
+command module,unarchive module,User Module.
+Line-in-file and block-in-file module:
+This is primarily useful when you want to change a single line in a file only. See the replace module if you want to change multiple, 
+similar lines or check blockinfile if you want to insert/update/remove a block of lines in a file. For other cases, see the copy or 
+template modules.
+
+14)what are aws services?:
+Amazon Elastic Cloud Compute(EC2)The Amazon EC2 service comes under the compute domain and it provides services that help to compute workloads.
+Amazon S3 (Simple Storage Service)
+Amazon Virtual Private Cloud (VPC)
+Amazon CloudFront
+Amazon Relational Database Services (RDS)
+Cloud watch
+cloud formation
+IAM
+Route53
+
+15)what is virtual private cloud?:
+Amazon Virtual Private Cloud (Amazon VPC) is a service that lets you launch AWS resources in a logically isolated virtual network 
+that you define. You have complete control over your virtual networking environment, including selection of your own IP address range, 
+creation of subnets, and configuration of route tables and network gateways. You can use both IPv4 and IPv6 for most resources in your 
+virtual private cloud, helping to ensure secure and easy access to resources and applications.
+16)what is kubernetes archicture?:
+The master node has various components, such as:  
+1.ETCD
+2.Controller Manager 
+3.Scheduler
+4.API Server
+5.Kubectl
+1. ETCD:
+This component stores the configuration details and essential values
+It communicates with all other components to receive the commands to perform an action.
+Manages network rules and post-forwarding activity
+2. Controller Manager:
+A daemon (server) that runs in a continuous loop and is responsible for gathering information and sending it to the API Server
+Works to get the shared set of clusters and change them to the desired state of the server 
+The key controllers are the replication controllers, endpoint controller, namespace controllers, and service account controllers
+The controller manager runs controllers to administer nodes and endpoints
+3. Scheduler:
+The scheduler assigns the tasks to the slave nodes
+It is responsible for distributing the workload and stores resource usage information on every node
+Tracks how the working load is used on clusters and places the workload on available resources.
+4. API Server:
+Kubernetes uses the API server to perform all operations on the cluster
+It is a central management entity that receives all REST requests for modifications, serving as a frontend to the cluster
+Implements an interface, which enables different tools and libraries to communicate effectively
+5. Kubectl:
+Kubectl controls the Kubernetes cluster manager
+        Syntax - kubectl [flags]
+
+SLAVE
+The slave node has the following components:
+
+1. Pod:
+A pod is one or more containers controlled as a single application
+It encapsulates application containers, storage resources, and is tagged by a unique network ID and other configurations that 
+regulate the operation of containers.
+2. Docker:
+One of the basic requirements of nodes is Docker
+It helps run the applications in an isolated, but lightweight operating environment. It runs the configured pods
+It is responsible for pulling down and running containers from Docker images
+3. Kubelet:
+Service responsible for conveying information to and from to the control plane service
+It gets the configuration of a pod from the API server and ensures that the containers are working efficiently
+The kubelet process is responsible for maintaining the work status and the node server
+4. Kubernetes Proxy:
+Acts as a load balancer and network proxy to perform service on a single worker node
+Manages pods on nodes, volumes, secrets, the creation of new containers, health check-ups, etc.
+A proxy service that runs on every node that makes services available to the external host.
+17)what is jenkins master and slave agent?:
+18)what are daily using git coomands?:
+#git init
+#git status
+#git add --all
+#git commit -m "Add three files"
+#git reset --soft HEAD^
+#git remote add origin https://github.com/YourUsername/some-small-app.git
+#git clone git@github.com:YourUsername/your-app.git
+#git pull git@github.com:YourUsername/your-app.git
+#git merge branchA branchB
+
+19)jenkins plugins:
+Plugins are the primary means of enhancing the functionality of a Jenkins environment to suit organization- or user-specific needs. 
+There are over a thousand different plugins.
+Example:Easy Installation Feature
+Docker Plugin for Jenkins
+Jira Plugin
+Slack Notification Plugin
+Maven Integration plugin
+Amazon EC2 Plugin
+JUnit Plugin
+Pipeline Plugin
+Mailer Plugin
+Green Balls Plugin
+Deploy WAR/EAR container
+s3 publisher
+ThinBackup
+Git 
+Github
+Ansible 
+
+20)jenkins scripted pipeline?:
+The scripted pipeline is a traditional way of writing the Jenkins pipeline as code. 
+Ideally, a Scripted pipeline is written in the Jenkins file on the web UI of Jenkins.
+The scripted pipeline provides huge control over the script and can manipulate the flow of script extensively.
+21)jenkins declarative pipeline?:
+Declarative pipeline is a relatively new feature that supports the pipeline as code concept.
+It makes the pipeline code easier to read and write. 
+The declarative pipeline is defined within a block labelled ‘pipeline’ whereas the scripted pipeline is defined within a ‘node’.
+22)docker compose?:
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure 
+your application's services. Then, with a single command, you create and start all the services from your configuration.
+23)docker swarm?:
+A Docker Swarm is a group of either physical or virtual machines that are running the Docker application and that have been 
+configured to join together in a cluster. ... The activities of the cluster are controlled by a swarm manager, and machines 
+that have joined the cluster are referred to as nodes.
+
+24)how to start a container?:
+$ docker start [OPTIONS] CONTAINER [CONTAINER...] 
+25)how to stop a conatiner?:
+$ docker stop [ContainerID]
+26)how to pull a docker image?:
+$ docker pull [image name]
+$ docker pull debian:jessie
+27)how to remove a conatiner?:
+To remove all stopped containers: docker container rm $(docker container ls –aq)
+27)what is  differemce between git and svn (version control system)?:
+The difference between Git and SVN version control systems is that Git is a distributed version control system, 
+whereas SVN is a centralized version control system. Git uses multiple repositories including a centralized repository and server, 
+as well as some local repositories
+what is
+		  		  
+ DOCKER VERSION: -19.03.3 (2019-10-07)
+ JENKINS VERSION: - 3.1.0 (2019-01-21)
+ ANSIBLE VERSION: - 2.5 (2.5.1 TO 2.5.15)
+ GIT VERSION: - 2.16	2018-01-17	2.16.6	2019-12-07
+ MAVEN VERSION: - 3.6.2 (2019-08-27)
+ APACHE TOMCAT VERSION: - 8.5.61 (8.5.X)
+ APACHE (HTTPD): - 2.4.39 (APRIL 2019)
+ NGINX VERSION: - 1.15.8 (2018-12-25)
+ SONARQUBE VERSION: - 7.9.x LTS (July 2019)
+ NEXUS VERSION: - 3.15.2
+ NAGIOS VERSION: - 4.4.3 – (2019-01-15)
+ what are kubenates version:1.20.
+what is  git version: 2.1.6 
+whar is ansible version:2.5
+what is maven  version:3.6
+jenkins version: 3.260
+docker version :19.03.3
+Terrform version?: latest version of Terraform (0.14.9)
+ pipeline 
+   agent any(){
+     stages {
+       stage (){
+      }
+    }
+ }
+eksctl create cluster \
+--name eks-cluster-demo \
+--version 1.15 \
+--region us-east-2 \
+--nodegroup-name eks-worker-nodes \
+--node-type t2.medium \
+--nodes 2 \
+--nodes-min 2 \
+--nodes-max 4 \
+
+1)what is terraform init:
+
+terraform init is used to intialize  working directory containing terraform  configuration files.
+
+2)what is terraform plan:
+
+terraform plan command  is used to create execute plan.
+
+3)what is terraform apply:
+
+terraform apply command is used for apply changes to reach the desired  state.
+
+
+4)what is terraform destroy:
+
+terraform destroy is used for terminate the resources defined in the terraform configuration.
+
+5)what is config map in kubenates?:
+
+A ConfigMap is an API object used to store non-confidential data in key-value pairs. 
+Pods can consume ConfigMaps as environment variables, command-line arguments, or as configuration files in a volume.
+ 
+6)what are kubernetes secrets?:
+Kubernetes Secrets let you store and manage sensitive information, such as passwords, OAuth tokens, and ssh keys. 
+Storing confidential information in a Secret is safer and more flexible than putting it verbatim in a Pod definition or in a container image.
+
+7)what are controller manager?:
+controller manager are the control loops used to watch the state of your cluster make or change  the request when ever needed.
+and controls the  replication controller ,end point controller, token controller ,source controller ,service and account controller.
+
+8)what is kubeadm?:
+Kubeadm is a tool built to provide kubeadm init and kubeadm join as best-practice "fast paths" for creating Kubernetes clusters.
+kubeadm init to bootstrap a Kubernetes control-plane node
+kubeadm join to bootstrap a Kubernetes worker node and join it to the cluster
+The command to bootstrap the cluster.
+
+9)what is kube api server?:
+The Kubernetes API server validates and configures data for the api objects which include pods, services, replication controllers, and others.
+kube api server : exposes the kubernetes Api from the master nodes.
+ 
+10)kube scheduler:  schedule pods  to run on the selected  nodes 
+ 
+11) kube proxy :  perform connection forwarding
+ 
+12) kubelet : command line tools to talk to k8s cluster.
+ 
+13) pod : pod is a wraper where the conatiner runs inside .
+ 
+14)docker volume: docker volume files mounted on docker conatiner to preserve the data running on the conatiner.
+ 
+15)cidr: class less interdomain routing  allocates ip addresses for Ip routing policy.
+
+16)  docker stats: returns the live data streaming on the running conatiner.
+ 
+17) Ansible roles :ansible roles provide a framwork for fully independent or interdependent collection of files,
+ 
+    tasks ,vars,templates,meta, defaults and handlers.
+	
+18)kubernetes networking:
+18a)explain how you can copy a file recurively on the host machine?:
+  
+ the copy module has a recursive parameter however if u want to perform more efficient larger no of files 
+ then the synchronize module is the best option for you.
+ what are roles
+
+ Roles provide a framework for fully independent and interdepedent collection of files,tasks,varaibles modules and templates.  
+   In ansible role is the primary mechanism for breaking playbook into multiple files.This simplies writing complex playbook and 
+   make easy to reuse
+   
+   play : the task started from start to finish .The execution of playbook is called play.
+
+19) handlers: Handlers are used to trigger a service such as restarting or stopping the service.
+   
+19a)what is Ansible?:
+ansible is a configuration management system .it allows to set up and manage infrastructure and applications.
+it allows user to deploy applications and update using ssh.without the need to deploy and agent on the remote system.
+
+20)  what are the various types of instances?:
+Instance types in AWS:
+1. General purpose
+2. Computing optimized 
+3. Memory optimized
+4. Accelerated computing
+5. Storage optimized
+21) what is Amazon machine Image?:
+An Amazon Machine Image (AMI) provides the information required to launch an instance. You must specify an AMI when you launch 
+an instance. You can launch multiple instances from a single AMI when you need multiple instances with the same configuration. 
+An Amazon Machine Image (AMI) is a template that contains a software configuration (for example, an operating system, an application server,and applications)
+22) what are various types of load balancing ?:
+1.Application Load Balancer -- layer7
+2.Network Load Balancer  -- layer 4
+3.Classic Load Balancer -- layer 4 and 7
+23)what is heapster and headless service in kubernetes?:
+Heapster:
+A Heapster is a performance monitoring and metrics collection system for data collected by the Kubelet. 
+This aggregator is natively supported and runs like any other pod within a Kubernetes cluster, 
+which allows it to discover and query usage data from all nodes within the cluster.
+Headless service:
+A headless service is used to interface with service discovery mechanisms without being tied to a ClusterIP, 
+therefore allowing you to directly reach pods without having to access them through a proxy. 
+It is useful when neither load balancing nor a single Service IP is required.
+24)what is RestAPI for  s3 bucket?:
+Amazon S3 REST API Integration using Manual Method
+Procedure for Implementation using Manual Method
+Step 1: Create an AWS Account
+Step 2: Declare IAM Permissions for the API
+Step 3: Create and Establish API Resources
+Step 4: Create and Initialize API Method
+Step 5: Expose API Method’s Access to S3 Bucket
+Step 6: Render API Methods to Access an Object in S3 Bucket
+Step 7: Call API via REST API Client
+https://hevodata.com/learn/amazon-s3-rest-api-integration-2-methods/
+
+25) how to copy files from two s3 buckets?:
+aws s3 sync s3://DOC-EXAMPLE-BUCKET-SOURCE s3://DOC-EXAMPLE-BUCKET-TARGET
+26) what is lambda in aws?:
+AWS Lambda is a serverless compute service that runs your code in response to events and automatically manages the underlying compute 
+resources for you. You can use AWS Lambda to extend other AWS services with custom logic, or create your own back-end services that 
+operate at AWS scale, performance, and security.
+27) what is terraform?:
+Terraform is a tool for building, changing, and versioning infrastructure safely and efficiently. Terraform can manage existing and 
+popular service providers as well as custom in-house solutions. Configuration files describe to Terraform the components needed to 
+run a single application or your entire datacenter.
+28)what is autoscaling in kubernetes?:
+Autoscaling is one of the key features in Kubernetes cluster. It is a feature in which the cluster is capable of increasing the number 
+of nodes as the demand for service response increases and decrease the number of nodes as the requirement decreases.
+The HORIZONTAL POD AUTOSCALER: automatically scales the number of Pods in a replication controller, deployment, replica set or stateful 
+set based on observed CPU utilization.
+VERTICAL POD AUTOSCALING: frees you from having to think about what values to specify for a container's CPU requests and limits and memory 
+requests and limits. The autoscaler can recommend values for CPU and memory requests and limits, or it can automatically update the values.
+What is the difference between a replica set and a replication controller?:
+The difference is mainly in the selectors used for pod replication. A replica set uses set-based selectors, 
+and replication controllers use equity-based selectors.
+29) Roll Back & Upgrade in kubernetes ?:
+Kubernetes has a built-in rollback mechanism. There are several strategies when it comes to deploying apps into production. 
+In Kubernetes, rolling updates are the default strategy to update the running version of your app. The rolling update 
+cycles previous Pod out and bring newer Pod in incrementally.
+30)how many types of ansible playbooks you have used?:
+Managing Kubernetes objects
+Integrating a CI/CD process with Jenkins
+Starting a service mesh with Istio
+Installing Dependency packages like epel-release,java
+Install and run web servers and application servers
+copy files from host to remote servers
+31)what is ingress in kubenates?:
+Kubernetes Ingress is an API object that provides routing rules to manage external users access to the services in a Kubernetes cluster, 
+typically via HTTPS/HTTP. ... Ingress allows you to configure and manage these capabilities inside the cluster
+32)What is egress in Kubernetes?:
+From the point of view of a Kubernetes pod, ingress is incoming traffic to the pod, and egress is outgoing traffic from the pod. 
+In Kubernetes network policy, you create ingress and egress “allow” rules independently (egress, ingress, or both).
+32)where to define variables in  ansible?:
+Variable in playbooks are very similar to using variables in any programming language. It helps you to use and assign a value to a variable 
+and use that anywhere in the playbook. One can put conditions around the value of the variables and accordingly use them in the playbook.
+33) terraform loops?:
+Terraform offers several different looping constructs, each intended to be used in a slightly different scenario: 
+count parameter: loop over resources. for_each expressions: loop over resources and inline blocks within a resource. 
+for expressions: loop over lists and maps.
+34)what is terraform validate?:
+The terraform validate command validates the configuration files in a directory, referring only to the configuration and not accessing 
+any remote services such as remote state, provider APIs, etc
+35) how to uninstall services in terraform?:
+To delete all the resources, run 
+# terraform destroy  
+To delete specific resources permanently, remove the resources from the configuration, and then run terraform apply.
+36)logs in apache: var/log/apaache
+37)logs in kubernetes pods: var/log/pods
+38)what are master and worker process in nginx?:
+nginx has one master process and several worker processes. The main purpose of the master process is to read and evaluate configuration, 
+and maintain worker processes. Worker processes do actual processing of requests.
+39)linux read write execute?:
+Setting 777 permissions to a file or directory means that it will be readable, writable and executable by all users.
+40)awk sed grep in linux?:
+AWK: It is a very powerful interpreted programming language which is specially designed for text processing through this we can search, 
+cut, and manipulate text.
+It can be used as a field extractor (like cut command), a basic calculator, and as a pattern matcher (like grep command) and 
+It allows the user to use variables, numeric functions, string functions, and logical operators.
+Syntax:
+#$ awk '{print}' employee.txt
+SED: Sed is a stream editor. A stream editor is used to perform basic text transformations on an input stream 
+(a file or input from a pipeline). It can perform lots of operations on file like, searching, find and replace, insertion or deletion.
+Syntax:
+## sed OPTIONS... [SCRIPT] [INPUTFILE...] 
+## $ sed 's/azmat/hasan/' employee.txt 
+grep:GREP is a multi-purpose file search tool that uses Regular Expressions. The grep stands for “global regular expression print,” 
+processes text line by line, and prints any lines which match a specified pattern. The grep command is used for searching the text 
+from the file according to the regular expression. By default, grep displays the matching lines. Grep is considered to be one of the 
+most useful commands on Linux and Unix-like operating systems. grep is a powerful file pattern searcher in Linux.
+Syntax:
+## grep [options] pattern [files]
+## $ grep -i "GRep" grepExample.txt
+CUT: The CUT command is a command-line tool for cutting data from each line of files and writing the result to standard output. 
+It can be used to cut parts of a line by byte position, character, and delimiter. It can also be used to cut data from file formats like CSV.
+Syntax:
+## cut OPTION... [FILE]...
+## $ echo 'knoldus' | cut -b 2
+41)webhooks in jenkins?:
+A webhook is a mechanism to automatically trigger the build of a Jenkins project upon a commit pushed in a Git repository. In order for 
+builds to be triggered automatically by PUSH and PULL REQUEST events, a Jenkins Web Hook needs to be added to each GitHub repository.
+42)git pull = git fetch + git merge
+43)docker file to install java maven tomcat?:
+# Dockerfile to install java
+# Install OpenJDK-8
+RUN apt-get update && \
+    apt-get install -y openjdk-8-jdk && \
+    apt-get install -y ant && \
+    apt-get clean;
+
+# Fix certificate issues
+RUN apt-get update && \
+    apt-get install ca-certificates-java && \
+    apt-get clean && \
+    update-ca-certificates -f;
+
+# Setup JAVA_HOME -- useful for docker commandline
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
+RUN export JAVA_HOME
+# Dockerfile to install maven
+FROM demo/oracle-java:8
+
+ENV MAVEN_VERSION 3.3.9
+
+RUN mkdir -p /usr/share/maven \
+  && curl -fsSL http://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
+    | tar -xzC /usr/share/maven --strip-components=1 \
+  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_HOME /usr/share/maven
+
+VOLUME /root/.m2
+
+CMD ["mvn"] 
+## Dockerfile to Install Tomcat
+RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION}/v${TOMCAT_MINOR_VERSION}/bin/apache-tomcat-${TOMCAT_MINOR_VERSION}.tar.gz && \
+	wget -qO- https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION}/v${TOMCAT_MINOR_VERSION}/bin/apache-tomcat-${TOMCAT_MINOR_VERSION}.tar.gz.md5 | md5sum -c - && \
+	tar zxf apache-tomcat-*.tar.gz && \
+ 	rm apache-tomcat-*.tar.gz && \
+ 	mv apache-tomcat* tomcat
+
+ADD create_tomcat_admin_user.sh /create_tomcat_admin_user.sh
+RUN mkdir /etc/service/tomcat
+ADD run.sh /etc/service/tomcat/run
+RUN chmod +x /*.sh
+RUN chmod +x /etc/service/tomcat/run
+
+EXPOSE 8080
+44)docker file to install apache?:
+## Dockerfile to install httpd
+FROM centos:latest
+MAINTAINER NewstarCorporation
+RUN yum -y install httpd
+COPY index.html /var/www/html/
+CMD [“/usr/sbin/httpd”, “-D”, “FOREGROUND”]
+EXPOSE 80
+45) docker volume set up?:
+## docker run --mount source=[volume_name],destination=[path_in_container] [docker_image]
+## docker volume create data
+## docker run -it --name=example1 --mount source=data,destination=/data ubuntu
+46)how to configure git on jenkins?:
+Manage Jenkins --> Manage Plugins --> GIT Plugin --> Install without restart 
+47)how to configure kubernetes on jenkins?:
+48)how to create vpc in terraform?:
+49) what is terrform version?: latest version of Terraform (0.14.9)
+38)how to create multiple scm in jenkins?:
+install mullti scm plugin 
+39)what is maven?:
+Maven is a powerful project management tool that is based on POM (project object model) file. It is used for projects build, dependency and 
+documentation. It simplifies the build process like ANT. ... maven make the day-to-day work of Java developers easier and generally help 
+with the comprehension of any Java-based project.
+40)what are maven stages?:
+There are three built-in life cycles:
+default: the main life cycle as it's responsible for project deployment
+clean: to clean the project and remove all files generated by the previous build
+site: to create the project's site documentation  
+A Maven phase represents a stage in the Maven build lifecycle. Each phase is responsible for a specific task.
+Here are some of the most important phases in the default build lifecycle:
+validate: check if all information necessary for the build is available
+compile: compile the source code
+#test-compile: compile the test source code
+test: run unit tests
+package: package compiled source code into the distributable format (jar, war, …)     
+verify: run any checks on results of integration tests to ensure quality criteria are met
+#integration-test: process and deploy the package if needed to run integration tests
+install: install the package to a local repository
+deploy: copy the package to the remote repository
+
+41)what is contionus integration & continuos delivery in jenkins?:
+IN CONTINUOUS INTEGRATION: after a code commit, the software is built and tested immediately. 
+in a large project with many developers, commits are made many times during a day. with each commit code is built and tested. 
+if the test is passed, build is tested for deployment. if deployment is a success, the code is pushed to production. 
+this commit, build, test, and deploy is a continuous process and hence the name continuous integration/deployment.
+Continuous Delivery: is the ability to get changes of all types—including new features, configuration changes, bug fixes 
+and experiments—into production, or into the hands of users, safely and quickly in a sustainable way.
+42)how to do quality code checking sonarqube:
+42)Intergrate jenkins to artifactory repository tool?:
+To install the Jenkins Artifactory Plugin, go to Manage Jenkins > Manage Plugins, click on the Available tab and search for Artifactory. 
+Select the Artifactory plugin and click Download Now and Install After Restart.
+Select Manage Jenkins from the left-navigation menu. Select Configure System from the list of configuration options. 
+In the Sonatype Nexus section, select Nexus IQ Server from the Add Nexus IQ Server dropdown menu and then enter the following: 
+Server URL: The location of your IQ Server.
+43)how to assign static ip in kubernetes form master to node-type?:
+How to set a static IP for Kubernetes load balancer?:
+Kubernetes Master assigns a new IP address.
+We can set a static IP for Kubernetes load balancer by changing the DNS records whenever Kubernetes Master assigns a new IP address.
+44)what is cidr?:
+CIDR, which stands for Classless Inter-Domain Routing, is an IP addressing scheme that improves the allocation of IP addresses. 
+It replaces the old system based on classes A, B, and C.
+45) what is public subnet and private subnet?:
+The public subnet is  the subnets that are associated with the route table that routes through an internet-gateway.
+An internet gate way This connects vpc to internet and other aws services.
+A public subnet routes 0.0.0.0/0 through an Internet Gateway (igw). Instances in a public subnet require public IPs to talk to the internet.
+A private subnet sets that route to a NAT instance. Private subnet instances only need a private ip and internet traffic is routed through 
+the NAT in the public subnet. You could also have no route to 0.0.0.0/0 to make it a truly private subnet with no internet access in or out.
+# 0.0.0.0/0 means non-routable meta-address used to designate an invalid, unknown or non applicable target.
+46)how to allocate route table to private subnet?:
+47)what is git?:
+Git is a free and open source distributed version control system designed to handle everything from small to very large projects with 
+speed and efficiency.
+48)what are various types of errors in ec2-instances?:
+
+49)if a customer is experiencing low speed .how to increase the speed 
+50)how to get new pem key when ur pem key is lost?:
+How to access EC2 Instance even if PEM file is lost:
+Accessing the EC2 instance even if you loose the pem file is rather easy.
+1.First, create a new instance by creating new access file, call it 'helper' instance 
+with same region and VPC as of the lost pem file instance.
+2.Now stop the lost pem file instance. Remember not to terminate instance but to stop it.
+3.Go to EBS volumes, select the root volume of the lost pem file instance and detach.
+4.Now again select the detached volume and this time you have to attach this volume to 
+helper instance which we created before. Since helper instance already has a root volume by default 
+as /dev/sda1, the newly attached volume will be secondary(eg: /dev/sdf).
+5.Login to your helper instance with its pem file.
+6.Execute below commands:
+
+#mkdir -p /var/recovery_desk
+#mount -o nouuid /dev/xvdf1 /var/recovery_desk
+#df -h
+#cat /home/ec2-user/.ssh/authorized_keys >> /var/recovery_desk/root/.ssh/authorized_keys
+#umount /var/recovery_desk
+#df -h
+
+7.Detach the secondary volume from helper instance.
+                                                      (Device /dev/sda1)
+8.Again attach the volume back to our recovery instance. Start the instance. Terminate the helper instance.
+Use helper instance pem file to log into recovery instance.
+51)write aws  cloud structure when your having web server, dataserver   two application servers ?:
+52)what is cross region replication in aws?:
+With cross-region replication, every object uploaded to an S3 bucket is automatically replicated to a destination bucket in 
+a different AWS region that you choose. For example, you can use cross-region replication to provide lower-latency data access 
+in different geographic regions.
+53) git stash:
+git stash temporarily save (or stashes) changes you've made to your working copy so you can work on something else, 
+and then come back and re-apply them later on.
+Use git stash when you want to record the current state of the working directory and the index, but want to go back 
+to a clean working directory.
+54)Write a shell script to print all even and odd number from 1 to 10?:
+echo "enter n value as range to calculate odd and even numbers."
+read n
+i=1
+while [ $i -le $n ]
+do
+if [ `expr $i % 2` -eq 0 ]
+then
+echo even=$i
+else
+echo odd=$i
+fi
+i=`expr $i + 1`
+done 
+55)$# means:-- shows the count of the arguments passed to the script.
+56)what is route 53 in aws?: Amazon Route 53 is a highly available and scalable cloud Domain Name System (DNS) web service. 
+It is designed to give developers and businesses an extremely reliable and cost effective way to route end users to Internet 
+applications by translating names like www.example.com into the numeric IP addresses.
+57)What is agile methodology and how it works??:
+The Agile methodology is a way to manage a project by breaking it up into several phases. It involves constant collaboration with 
+stakeholders and continuous improvement at every stage. Once the work begins, teams cycle through a process of planning, executing, 
+and evaluating.
+58)where to define variables in terraform?:
+Go to your Terraform project directory. Terraform variables can be defined within the infrastructure plan but are recommended to be 
+stored in their own variables file.
+
+59)Docker commands:
+Pause container:
+Used to pause the processes running inside the container.
+$  docker pause <container-id/name>
+Unpause container:
+Used to unpause the processes inside the container.
+$  docker unpause <container-id/name>
+Start container:
+Start the container, if present in stopped state.
+$  docker start <container-id/name>
+Stop container:
+To stop the container and processes running inside the container:
+$  docker stop <container-id/name>
+To stop all the running docker containers
+$  docker stop $(docker ps -a -q)
+Restart container:
+It is used to restart the container as well as processes running inside the container.
+$  docker restart <container-id/name>
+Kill container:
+We can kill the running container.
+$  docker kill <container-id/name>
+Destroy container:
+Its preferred to destroy container, only if present in stopped state instead of forcefully destroying the running container.
+$  docker rm <container-id/name>
+To remove all the stopped docker containers
+$  docker rm $(docker ps -q -f status=exited)
+Docker events” to see what events we can capture:
+$  docker events --since $t0 --until $t1
+docker export:
+when we import our tar file back to an image, it will flatten and shrink the resulting image into a single layer.
+$  docker export -o ephemeral.tar ephemeral
+60)what is node exporter in prometheus?:
+Node Exporter is a Prometheus exporter for server level and OS level metrics with configurable metric collectors. 
+It helps us in measuring various server resources such as RAM, disk space, and CPU utilization.
+61)what is s3 life cycle policy?:
+An S3 Lifecycle configuration is a set of rules that define actions that Amazon S3 applies to a group of objects. ... For example, 
+you might choose to transition objects to the S3 Standard-IA storage class 30 days after you created them, or archive objects to 
+the S3 Glacier storage class one year after creating them.

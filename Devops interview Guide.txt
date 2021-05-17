@@ -1,0 +1,1033 @@
+Questions from GIT, Jenkins, Ansible, Dockers & Containers, Kubernetes,
+OpenShift, AWS, CI/CD, Scripting(Shell/Python), Linux (RHEL), Monitoring
+ GIT
+###########
+1)What is GIT ?:
+Git is a free and open source distributed version control system designed to handle everything from small to very large projects with 
+speed and efficiency.
+2)What is difference between GIT &Github ?:
+Git is a revision control system, a tool to manage your source code history.
+GitHub is a hosting service for Git repositories.
+So they are not the same thing: Git is the tool, GitHub is the service for projects that use Git.
+3)Why we use GIT ?:
+One of the biggest advantages of Git is its branching capabilities. Unlike centralized version control 
+systems, Git branches are cheap and easy to merge.
+4)What is SCM &VCS ?:
+Version control systems are software tools that help software teams manage changes to source code over time. ... 
+Version control software keeps track of every modification to the code in a special kind of database.
+Source code management (SCM) is used to track modifications to a source code repository. SCM tracks a 
+running history of changes to a code base and helps resolve conflicts when merging updates from multiple contributors.
+Types of Version Control Systems:
+1.Local Version Control Systems.
+2.Centralized Version Control Systems.
+3.Distributed Version Control Systems.
+5)What are the process of pushing the code to GithubRepository ?:
+initialize the local reposotory 
+# git init
+create a file
+touch <file name>
+add to index area
+# git add <file name>
+after that commit to local repository
+# git commit -m <message>
+after that push it to the remote repository
+# git push -u origin <branch name>
+6)Why do we commit ?:
+The git commit command captures a snapshot of the project's currently staged changes.
+The "commit" command is used to save your changes to the local repository. 
+7)what are the commands of GIT to push the code ?:
+## git push <remote> <branch>
+What is git rebase?: 
+Rebasing is the process of moving or combining a sequence of commits to a new base commit.
+Rebasing is most useful and easily visualized in the context of a feature branching workflow.
+8)how you can merge a git repository with another ?:
+Create a new empty repository New.
+Make an initial commit because we need one before we do a merge.
+Add a remote to old repository OldA.
+Merge OldA/master to New/master.
+Make a subdirectory OldA.
+Move all files into subdirectory OldA.
+Commit all of the file moves.
+Repeat 3-6 for OldB.
+# Assume the current directory is where we want the new repository to be created
+# Create the new repository
+git init
+
+# Before we do a merge, we have to have an initial commit, so we’ll make a dummy commit
+dir > deleteme.txt
+git add .
+git commit -m “Initial dummy commit”
+
+# Add a remote for and fetch the old repo
+git remote add -f old_a <OldA repo URL>
+
+# Merge the files from old_a/master into new/master
+git merge old_a/master
+
+# Clean up our dummy file because we don’t need it any more
+git rm .\deleteme.txt
+git commit -m “Clean up initial file”
+
+# Move the old_a repo files and folders into a subdirectory so they don’t collide with the other repo coming later
+mkdir old_a
+dir –exclude old_a | %{git mv $_.Name old_a}
+
+# Commit the move
+git commit -m “Move old_a files into subdir”
+
+# Do the same thing for old_b
+git remote add -f old_b <OldB repo URL>
+git merge old_b/master
+mkdir old_b
+dir –exclude old_a,old_b | %{git mv $_.Name old_b}
+git commit -m “Move old_b files into subdir”
+9)What is branching in git ?:
+In Git, branches are a part of your everyday development process. ... Git branches are effectively a pointer to a snapshot of your changes. 
+When you want to add a new feature or fix a bug no matter how big or how small—you spawn a new branch to encapsulate your changes.
+10)Different types of branching in GIT ?:
+This workflow consists of five types of branches, each with different roles:
+1.Master.
+2.Feature branch (also known as Topic branch)
+3.Release branch.
+4.Hotfix branch.
+5.Develop branch (also known as Integration branch)
+11)What is merge conflict in git ?:
+A merge conflict is an event that takes place when Git is unable to automatically resolve differences in code between two commits. 
+Git can merge the changes automatically only if the commits are on different lines or branches. ... The Git merge command combines 
+separate branches and resolves any conflicting edits.
+12)How you can resolve merge conflict if you are merging same project and in the same branch ?:
+There are a few steps that could reduce the steps needed to resolve merge conflicts in Git.
+
+1.The easiest way to resolve a conflicted file is to open it and make any necessary changes
+2.After editing the file, we can use the git add a command to stage the new merged content
+3.The final step is to create a new commit with the help of the git commit command
+4.Git will create a new merge commit to finalize the merge
+Let us now look into the Git commands that may play a significant role in resolving conflicts.
+
+Git Commands to Resolve Conflicts
+1. git log --merge 
+The git log --merge command helps to produce the list of commits that are causing the conflict
+
+2. git diff 
+The git diff command helps to identify the differences between the states repositories or files
+
+3. git checkout 
+The git checkout command is used to undo the changes made to the file, or for changing branches
+
+4. git reset --mixed 
+The git reset --mixed command is used to undo changes to the working directory and staging area
+
+5. git merge --abort
+The git merge --abort command helps in exiting the merge process and returning back to the state before the merging began
+
+6. git reset
+The git reset command is used at the time of merge conflict to reset the conflicted files to their original state
+Jenkins
+##########
+1)What is Jenkins ?:
+Jenkins is an open-source automation tool written in Java with plugins built for Continuous Integration purposes. 
+Jenkins is used to build and test your software projects continuously making it easier for developers to integrate 
+changes to the project, and making it easier for users to obtain a fresh build.
+## change default port in jenkins vi /etc/sysconfig/jenkins
+2)Why we use Jenkins ?:
+Jenkins gives you a common way to monitor a CI/CD pipeline (with many users watching the same important environment). ... 
+Nowadays Jenkins is the core for many projects that needed end to end automated application deployments. In short, 
+it is being used as an orchestrator for deploying applications.
+3)What are the other tools/technologies present in market other than Jenkins for CI/CD ?:
+Teamcity,Bamboo,Gitlab etc..
+4)what is the difference between poll scm and build periodically?:
+Poll SCM periodically polls the SCM to check whether changes were made (i.e. new commits) and builds the project if new commits 
+where pushed since the last build, whereas build periodically builds the project periodically even if nothing has changed.
+5)How to move Jenkins from one server to another ?:
+6)How to create Jenkins backup ?:
+install thin backup plugins and configure with jenkins home directory.
+* What are plugins in Jenkins ?:
+Plugins are the primary means of enhancing the functionality of a Jenkins environment to suit organization- or user-specific needs. 
+There are over a thousand different plugins which can be installed on a Jenkins controller and to integrate various build tools, 
+cloud providers, analysis tools, and much more.
+Docker Plugin for Jenkins
+Jira Plugin
+Slack Notification Plugin
+Maven Integration plugin
+Amazon EC2 Plugin
+JUnit Plugin
+Pipeline Plugin
+Mailer Plugin
+Green Balls Plugin
+Deploy WAR/EAR container
+s3 publisher
+ThinBackup
+Git 
+Github
+Ansible
+* What are the default plugins installed in Jenkins ?:
+* How to schedule builds in Jenkins ?:
+Build periodically
+Poll SCM
+* Difference between Ant, Maven, Gradle ?:
+Gradle is a Groovy-based build automation tool.It uses DSL(Domain Specific Language)instead of XML(Extensible Markup Language)to define build scripts.
+Maven and Ant is a Java-based build automation tools. It uses XML files to determine build scripts.
+Gradle is developed to overcome the drawbacks of Maven and Ant.
+Gradle is more powerful. However, there are times that you really do not need most of the features and functionalities it offers. 
+Maven might be best for small projects, while Gradle is best for bigger projects.
+* Difference between Jenkins, Teamcity and Bamboo ?
+* How to configure a cloud access in Jenkins ?
+* What is Jenkins slaves ?:
+Jenkins Slave. A slave is a Java executable that runs on a remote machine. The characteristics of the slave are : 
+It hears requests from the Jenkins Master instance. Slaves can run on a variety of operating systems.
+* How to run a groovy script in Jenkins ?:
+manage jenkins >> script console
+* What is Jenkins Pipeline ?:
+Jenkins Pipeline (or simply "Pipeline") is a suite of plugins which supports implementing and integrating continuous 
+delivery pipelines into Jenkins. A continuous delivery pipeline is an automated expression of your process for getting 
+software from version control right through to your users and customers.
+
+* What are different types of Jenkins Pipelines ?:
+scripted pipeline
+declarative pipeline
+* What is Declarative pipeline in Jenkins ?:
+Declarative pipeline is a relatively new feature that supports the pipeline as code concept.
+It makes the pipeline code easier to read and write. 
+The declarative pipeline is defined within a block labelled ‘pipeline’ whereas the scripted pipeline is defined within a ‘node’.
+* Is Jenkins a CI tool or both CI/CD ?:
+Jenkins offers a simple way to set up a continuous integration or continuous delivery (CI/CD) environment for almost any 
+combination of languages and source code repositories using pipelines, as well as automating other routine development tasks. 
+The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment.
+* How to install Jenkins with non root access in Linux ?:
+To change the Jenkins user, Open “/etc/sysconfig/jenkins” file. Changing JENKINS_USER variable and Make sure user exists 
+in your system. Changing JENKINS_USER to huupv USER. The restarted Jenkins and check user has changed with ps command.
+* If you have 200 employees in your company, how you can assign Jenkins access to these employee how you can give permission in Jenkins ?:
+setup role based strategy
+Jenkins Task
+#####################
+Task 1
+Write the Jenkins pipeline code for Java &Php application
+Task 2
+Write the Jenkinsfile code to build a Java application with Maven with error handling
+Task 3
+Complete the following tasks:
+1. Jenkins setup on linux
+2. Setup app server with apache to deploy an app.
+3. create three jobs on jenkins
+4. Pull the code from git repo
+5. Build the application
+6. deploy an app on apache using ansible.
+7. app deploy should work with single trigger hit(git pull job -> build app -> deploy on apache server)
+8. job should get triggered on git push on git repo
+Ansible
+######################
+* What is Ansible ?
+* What is Configuration Management ?
+* Is Ansible only a tool for Configuration Management ?
+* What are the components of Ansible ?:
+Inventory
+Playbooks
+Plays
+Tasks
+Roles
+Handlers
+Templates
+Variables
+
+* How Ansible works ?
+* What are the other tools in market other than Ansible ?
+* How Ansible is different from Chef &Puppet ?
+* What is Inventory in Ansible ?
+* What are the types of Inventories ?
+1. static
+2.dynamic
+* What is play &playbook ?:
+A Playbook is a list of plays. It can contain a single play, or many. A Play is a list of tasks and roles that should be run. 
+A Play can also define vars that should be used for that play.
+* Difference between hosts &groups ?
+* What is Roles ?
+* How to install a Role ?
+* How to install multiple roles ?:
+Installing a collection from Galaxy
+$ ansible-galaxy collection install my_namespace.my_collection
+first path defined in COLLECTIONS_PATHS, which by default is ~/.ansible/collections
+$ ansible-galaxy install -r requirements.yml
+* How to create ansible roles ?:
+* What is Dynamic Inventory & when we use it & for what ?
+* How do you manage dynamic inventory in Ansible?
+Inventory script example: Cobbler
+To tie your Ansible inventory to Cobbler, copy this script to /etc/ansible and chmod +x the file. 
+Run cobblerd any time you use Ansible and use the -i command line option (for example, -i /etc/ansible/cobbler.py ) 
+to communicate with Cobbler using Cobbler's XMLRPC API.
+* Where is the Ansible Configuration file located ?:
+/etc/ansible/ansible.cfg
+* What are the different ways other than SSH by which Ansible can connect to remote hosts ?:
+For authenticating while connecting to the remote hosts we have two options, either we need to specify the userId and the password 
+in the ansible command . or we can connect via SSH key.
+* What is variable in Ansible ?
+* What are different types of variables ?:
+The types of variables that Ansible supports are String , Numbers , Float , List , Dictionary , and Boolean
+* How to assign variables in group vars& hosts vars ?   
+* Difference between File & Template directory in Roles ?:
+files: contains files which we want to be copied to the remote host. We don't need to specify a path of resources stored in this directory. 
+templates: contains file template which supports modifications from the role. We use the Jinja2 templating language for creating templates.
+* Difference between default &vars directory in Roles ?:
+According to Ansible's definition, the difference between defaults and vars is: defaults mean “default variables for the roles” 
+and vars mean “other variables for the role”. The priority of the vars is higher than that of defaults.
+* What is Jinja 2 template in ansible?:
+Jinja2 templates are simple template files that store variables that can change from time to time. When Playbooks are executed, 
+these variables get replaced by actual values defined in Ansible Playbooks.
+* What is modules in Ansible ?:
+Ansible modules are discrete units of code which can be used from the command line or in a playbook task.
+The modules also referred to as task plugins or library plugins in the Ansible.
+* Difference between COPY & FILE modules ?:
+copy module will copy the file from 'files' directory.
+file module is used to create or delete a file or a directory.           
+* Difference between SHELL & COMMAND modules ?:
+Here are the main differences between these modules. With the Command module the command will be executed without being proceeded through 
+a shell. ... The Shell module runs a command through a shell, by default /bin/sh. This can be changed with the option executable.
+* What is Setup module ?what it does ?:
+* What is register & debug in Ansible ?:
+Register:Ansible register is a way to capture the output from task execution and store it in a variable. 
+This is an important feature, as this output is different for each remote host, and the basis on that we can use 
+conditions loops to do some other tasks. Also, each register value is valid throughout the playbook execution.
+Debug: ansible dubug module is used for print a message
+* What is changed_when in Ansible ?:
+The Ansible failed_when and changed_when Statements:
+Ansible failed_when and changed_when statements are similar to ansible when statement.  The only difference is that It will mark 
+the task as failed or Success[changed], when the condition defined, is met or satisfied.
+The primary purpose of the failed_when and changed_when statements are to determine whether the task is actually successful or failure.
+* Can we disable automatic gathering facts in Ansible ?:
+You can use gather_facts: no keyword in your playbook. It will disable this task automatically.
+* How error handling can be done in Ansible ?:
+Generally playbooks will stop executing any more steps on a host that has a task fail. Sometimes, though, you want to continue on. 
+To do so, write a task that looks like this:
+
+- name: this will not be counted as a failure
+  command: /bin/false
+  ignore_errors: yes
+* How to ignore failed commands in Ansible ?:
+* What is handlers ? Why we use Handlers in Ansible ?:
+Handlers are just like normal tasks in an Ansible playbook but they run only when if the Task contains a “notify” directive.
+Handlers can be used for things other than service restarts, but service restarts are the most common usage.
+* What is Privilege Escalation in Ansible ?:
+Ansible uses existing privilege escalation systems to execute tasks with root privileges or with another user's permissions. 
+Because this feature allows you to 'become' another user, different from the user that logged into the machine (remote user), 
+we call it become.
+* Task to connect(SSH) Ansible to remote host using another user & run the playbook to the remote host using with another user?:
+Ansible uses the become, become_user, and become_method directives to achieve privilege escalation. You can apply them to an 
+entire play or playbook, set them in an included playbook, or set them for a particular task.
+
+- name: checkout repo
+  git: repo=https://github.com/some/repo.git version=master dest={{ dst }}
+  become: yes
+  become_user: some_user
+* What is Ansible vault ?:
+Ansible Vault is a feature of ansible that allows you to keep sensitive data such as passwords or keys in encrypted files, 
+rather than as plaintext in playbooks or roles. These vault files can then be distributed or placed in source control.
+* How to decrypt a vault file ?:
+To decrypt a vault encrypted file, use the ansible-vault decrypt command.the ansible-vault decrypt command is only suggested 
+for when you wish to remove encryption from a file permanently.
+* How to encrypt a string in Ansible using AnsibleVault?:
+To create a basic encrypted variable, pass three options to the ansible-vault encrypt_string command:
+1.a source for the vault password (prompt, file, or script, with or without a vault ID)
+2.the string to encrypt.
+3.the string name (the name of the variable)
+$ ansible-vault encrypt foo.yml bar.yml baz.yml
+* If a string is encrypted in a file with a password then how to pass the password using parameter while decrypting ?:
+ENCRYPT PASSWORD password algorithm ENCRYPTKEY {key_name | DEFAULT}
+ENCRYPT PASSWORD mypassword AES256 ENCRYPTKEY mykey1
+ENCRYPT PASSWORD mypassword BLOWFISH ENCRYPTKEY mykey1
+ENCRYPT PASSWORD mypassword BLOWFISH ENCRYPTKEY DEFAULT
+
+* If a file is encrypted using password & password is stored in a file how to pass the file to decrypt the file ?:
+
+* If a file is encrypted using password & password is also encrypted then how to provide the password while decrypting the file ?:
+* What is Ansible galaxy ?:
+Ansible Galaxy is a repository for Ansible Roles that are available to drop directly into your Playbooks to streamline your 
+automation projects. ... It is easy to get up and running with Ansible.
+* What is Tags in Ansible ? Why it is used ?:
+A tag is an attribute that you can set to an Ansible structure (plays, roles, tasks), and then when you run a playbook 
+you can use –tags or –skip-tags to execute a subset of tasks.
+If you need to play(execute) only certain specific tasks you can specify the tags needed while executing the ansible-playbook command.
+* What is lookup in Ansible playbook ?:
+Lookup plugins retrieve data from outside sources such as files, databases, key/value stores, APIs, and other services. 
+Like all templating, lookups execute and are evaluated on the Ansible control machine.
+* How to control the command failure in Ansible ?:
+* How to debug your playbook ?
+* What is diff mode ?
+* What is Dry Run in Ansible& how to do that ?
+* What is pre task & post task in ansible?:
+Ansible lets you run tasks before or after the main tasks (defined in tasks: ) or roles (defined in roles: —we'll get to roles later) 
+using pre_tasks and post_tasks , respectively.
+* How you can run your all tasks at once in ansible?:
+If you want to run multiple tasks in a playbook concurrently, use async with poll set to 0. When you set poll: 0 , 
+Ansible starts the task and immediately moves on to the next task without waiting for a result.
+* What is block in Ansible ?:
+Blocks create logical groups of tasks. Blocks also offer ways to handle task errors, similar to exception handling in 
+many programming languages. Grouping tasks with blocks.
+* What are different variable scopes ?
+* How variable precedence takes place ?
+* Difference between include &import in ansible?:
+All import* statements are pre-processed at the time playbooks are parsed.
+All include* statements are processed as they encountered during the execution of the playbook.
+* How to include custom modules in Ansible ?:
+You can add a local module in any of below locations as Ansible automatically loads all executable files found 
+in those directories as modules.
+
+1.~/.ansible/plugins/modules/
+2./usr/share/ansible/plugins/modules/
+3.any directory in ANSIBLE_LIBRARY environment variable
+* Describe the role directory structure in ansible?:
+Ansible role is a set of tasks to configure a host to serve a certain purpose like configuring a service. Roles are defined 
+using YAML files with a predefined directory structure.
+A role directory structure contains directories: defaults, vars, tasks, files, templates, meta, handlers. Each directory 
+must contain a main.yml file which contains relevant content.
+1.defaults: contains default variables for the role. Variables in default have the lowest priority so they are easy to override.
+2.vars: contains variables for the role. Variables in vars have higher priority than variables in defaults directory.
+3.tasks: contains the main list of steps to be executed by the role.
+4.files: contains files which we want to be copied to the remote host. We don’t need to specify a path of resources stored in this directory.
+5.templates: contains file template which supports modifications from the role. We use the Jinja2 templating language for creating templates.
+6.meta: contains metadata of role like an author, support platforms, dependencies.
+7.handlers: contains handlers which can be invoked by “notify” directives and are associated with service.
+
+Ansible Task
+#############
+Task 1
+Part 1. Write Ansible playbook to automate Jenkins deployment
+Part 2. Write Ansible role to install Docker& setup Kubernetes cluster
+Automate the pipeline creation in Jenkins to create docker container & deploy on Kubernetes cluster
+Task 2
+Write ansible playbook for below tasks:
+1. Install apache server and deploy sample html application
+2. Create /var/www/example.com
+3. deploy a sample application to the above directory
+4. create a virtual host for deploy application and set it as default virtualhost
+
+Dockers & Containers
+######################
+* What is docker ?:
+Docker is an open platform for developing, shipping, and running applications. Docker enables you to separate 
+your applications from your infrastructure so you can deliver software quickly. With Docker, you can manage your 
+infrastructure in the same ways you manage your applications.
+* Difference between container &VMs ?:
+Virtualization enables you to run multiple operating systems on the hardware of a single physical server, 
+while containerization enables you to deploy multiple applications using the same operating system on a 
+single virtual machine or server.
+* Difference between Docker&Virtualization ?:
+Docker is container based technology and containers are just user space of the operating system. ... A Virtual Machine, 
+on the other hand, is not based on container technology. They are made up of user space plus kernel space of an operating 
+system. Under VMs, server hardware is virtualized.
+* Difference between container and image ?:
+A Docker image packs up the application and environment required by the application to run, and a container is a running 
+instance of the image. Images are the packing part of Docker, analogous to "source code" or a "program". Containers are 
+the execution part of Docker, analogous to a "process".
+* How docker image builds ?:
+The docker build command builds Docker images from a Dockerfile and a “context”. A build's context is the set of files 
+located in the specified PATH or URL . The build process can refer to any of the files in the context. For example, your 
+build can use a COPY instruction to reference a file in the context.
+* What are docker image layers ?:
+A Docker image consists of several layers. Each layer corresponds to certain instructions in your Dockerfile . 
+The following instructions create a layer: RUN , COPY , ADD . The other instructions will create intermediate layers 
+and do not influence the size of your image.
+* How docker image layers work ?:
+* What is overlays ?:
+The overlay network driver creates a distributed network among multiple Docker daemon hosts. This network sits on top of 
+(overlays) the host-specific networks, allowing containers connected to it (including swarm service containers) to 
+communicate securely when encryption is enabled.
+* Where the docker image layes can be found in which directory ?
+* How can we check the content of each layer ?
+* How to check the layers stacked with image ?
+* What is Union Mount &AUFS ?
+* Why use Union mount system for Docker ?
+* What are the 3 different directories in /var/lib/docker/aufs ?:
+The container layer
+diff/ : Differences introduced in the writable container layer, such as new or modified files.
+layers/ : Metadata about the writable container layer's parent layers.
+mnt/ : A mount point for each running container's unified filesystem, exactly as it appears from within the container.
+* How to run an image ?
+* How to tag an image ?
+* How to Link one container with another ?
+* How do you sequence the containers? A first then B should execute after that ?
+* How to create a volume in docker container to store data ?
+* How to mount a local directory into a container ?
+* How to expose a port no to access container ?
+* What is entrypoint in docker ?
+* What is dockerfile ?
+* Difference between ADD & COPY parameters in dockerfile ?
+* How to create a bridge in container ?
+* How a container gets an internal IP ?
+* Can we check the process of a container inside as well as outside the container ?
+* Can we check the container process on dockerhost ?
+* How kernel isolates to run the container and how resources managed by the kernel ?
+* What is namespace and cgroups ?
+* What is docker-compose and docker-swarm ?
+* How you can give different network IP to the container ?
+* What are the parameters of dockerfile ?
+* Is there any windows container also available ?
+* How to stop a container ?
+* How to run a container in background ?
+* How to go inside a container if container is running in background ?:
+## $ docker exec -it <container name> /bin/bash
+* How to check running containers ?
+* How to remove an image ?
+* How to run an image which is in tar format ?:
+## $ docker load [OPTIONS] tar file
+* Command to check the process of a container ?:
+if you are already inside of a container, then just use ps -eaf command to see the running processes.
+* How to check resource utilisation of a container ?:
+## $ docker stats
+## $ docker stats <container name>
+* How to create an image ?
+* How to save changes of a container ?
+## $ docker commit 
+* What are registries ?
+* Difference between docker commands: up, run &start ?
+* Can we run more than one process in a container ?:
+Don't run more than one process in a single container – Containers are perfect to run a single process 
+(http daemon, application server, database), but if you have more than a single process, you may have more trouble managing, 
+retrieving logs, and updating the processes individually.
+
+Docker Task
+#############
+Part 1. Write a Docker file to create a Docker image which should have Wordpress installed
+Part 2. Write a Docker file to create a Docker image for database
+Now, use Docker compose to bring up the above Docker images as containers. Database container should mount the 
+local host's “/etc/mysql” volume into it's (containers) /etc/mysql directory.
+Kubernetes
+##############
+* What is Kubernetes ?:
+Kubernetes is a portable, extensible, open-source platform for managing containerized workloads and services, 
+that facilitates both declarative configuration and automation.
+* What are Kubernetes Components ?:
+The master node has various components, such as:  
+1.ETCD
+2.Controller Manager 
+3.Scheduler
+4.API Server
+5.Kubectl
+1. ETCD:
+This component stores the configuration details and essential values
+It communicates with all other components to receive the commands to perform an action.
+Manages network rules and post-forwarding activity
+2. Controller Manager:
+A daemon (server) that runs in a continuous loop and is responsible for gathering information and sending it to the API Server
+Works to get the shared set of clusters and change them to the desired state of the server 
+The key controllers are the replication controllers, endpoint controller, namespace controllers, and service account controllers
+The controller manager runs controllers to administer nodes and endpoints
+3. Scheduler:
+The scheduler assigns the tasks to the slave nodes
+It is responsible for distributing the workload and stores resource usage information on every node
+Tracks how the working load is used on clusters and places the workload on available resources.
+4. API Server:
+Kubernetes uses the API server to perform all operations on the cluster
+It is a central management entity that receives all REST requests for modifications, serving as a frontend to the cluster
+Implements an interface, which enables different tools and libraries to communicate effectively
+5. Kubectl:
+Kubectl controls the Kubernetes cluster manager
+        Syntax - kubectl [flags]
+
+SLAVE
+The slave node has the following components:
+
+1. Pod:
+A pod is one or more containers controlled as a single application
+It encapsulates application containers, storage resources, and is tagged by a unique network ID and other configurations that 
+regulate the operation of containers.
+2. Docker:
+One of the basic requirements of nodes is Docker
+It helps run the applications in an isolated, but lightweight operating environment. It runs the configured pods
+It is responsible for pulling down and running containers from Docker images
+3. Kubelet:
+Service responsible for conveying information to and from to the control plane service
+It gets the configuration of a pod from the API server and ensures that the containers are working efficiently
+The kubelet process is responsible for maintaining the work status and the node server
+4. Kubernetes Proxy:
+Acts as a load balancer and network proxy to perform service on a single worker node
+Manages pods on nodes, volumes, secrets, the creation of new containers, health check-ups, etc.
+A proxy service that runs on every node that makes services available to the external host.
+* What is etcd ?:
+This component stores the configuration details and essential values
+It communicates with all other components to receive the commands to perform an action.
+Manages network rules and post-forwarding activity
+* What is master &minion ?:
+Kubernetes cluster is a collection of machines, each machine has a dedicated role. They can be master or worker. 
+The master is our API point of contact and holds the information about what's going on in the cluster in terms of 
+apps, pods, developments, etc. ... 
+The machines that acts as workers, used to be called minions
+* How to make quorum of cluster?:
+* What is Replication controller & what it does ?:
+A replication controller (RC) is a supervisor for long-running pods. An RC will launch a specified number of pods 
+called replicas and makes sure that they keep running, for example when a node fails or something inside of a pod, 
+that is, in one of its containers goes wrong.
+* What is ingress ?:
+Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster. Traffic routing is controlled by 
+rules defined on the Ingress resource.
+* Difference between Kubernetes & DockerSwarm ?:
+In Kubernetes, an application can be deployed using a combination of pods, deployments, and services (or micro-services).
+Docker Swarm, applications can be deployed as services (or micro-services) in a Swarm cluster. YAML files can be used to 
+specify multi-container. Moreover, Docker Compose can deploy the app.
+Docker Swarm is supported for only monitoring with the third party applications.
+Docker Swarm has an open API, it makes easier to connect with plenty of apps.
+* How can you rollbck the previous version of application in Kuberntes?:
+Kubernetes has a built-in rollback mechanism. There are several strategies when it comes to deploying apps into production. 
+In Kubernetes, rolling updates are the default strategy to update the running version of your app. The rolling update cycles 
+previous Pod out and bring newer Pod in incrementally.
+* Scenario: There are 2 tables, emp, empsal if there schema changes,
+  How does that deployment happens into containers/POD automatically?
+* How does container know that application is getting failure ?
+* Difference between nodeport, clusterIP, load balancer &ingress ?:
+nodeport:The NodePort service is the most fundamental way to get external traffic directly to your service. 
+It opens a specific port on all Nodes and forwards any traffic sent to this port to the service.
+clusterIP:The ClusterIP is the default Kubernetes service that provides a service inside a cluster (with no external access) 
+that other apps inside your cluster can access.
+load balancer:A LoadBalancer service is the standard way to expose a service to the internet. 
+There is no such port reserve with Load balancer on each node in the cluster.
+Ingress:Ingress is actually NOT a type of service. Instead, it sits in front of multiple services and act as a “smart router” or 
+entrypoint into your cluster.
+Ingress is probably the most powerful way to expose your services, but can also be the most complicated. 
+There are many types of Ingress controllers, from the Google Cloud Load Balancer, Nginx, Contour, Istio, and more.
+* What is kubectl & kubelet ?:
+kubelet:The kubelet is the primary "node agent" that runs on each node.
+kubectl: The Kubernetes command-line tool, kubectl, allows you to run commands against Kubernetes clusters. 
+You can use kubectl to deploy applications, inspect and manage cluster resources, and view logs.
+* What is the use of Kube-controller manager ?:
+A daemon (server) that runs in a continuous loop and is responsible for gathering information and sending it to the API Server
+Works to get the shared set of clusters and change them to the desired state of the server 
+The key controllers are the replication controllers, endpoint controller, namespace controllers, and service account controllers
+The controller manager runs controllers to administer nodes and endpoints
+* What is pod ?:
+Pods are the smallest, most basic deployable objects in Kubernetes. A Pod represents a single instance of a 
+running process in your cluster. Pods contain one or more containers, such as Docker containers. When a Pod 
+runs multiple containers, the containers are managed as a single entity and share the Pod's resources.
+* How many containers can run in a pod ?:
+a Pod can contain more than one container, usually because these containers are relatively tightly coupled.
+* How many containers can be launched in a node ?:
+As a result, a node running 10 pods actually has 20 containers running.
+* What is the role of Kube-Scheduler ?:
+The scheduler assigns the tasks to the slave nodes
+It is responsible for distributing the workload and stores resource usage information on every node
+Tracks how the working load is used on clusters and places the workload on available resources.
+* How the 2 pods communicate with each other ?:
+Each pod on a node has its own network namespace. Each pod has its own IP address.
+Kubernetes gives every pod its own cluster-private IP address, so you do not need to explicitly create 
+links between pods or map container ports to host ports.
+* How 2 containers inside a pod communicate with each other ?:
+Containers in a Pod run on a “logical host”; they use the same network namespace (in other words, the same IP address 
+and port space), and the same IPC namespace. They can also use shared volumes. These properties make it possible for these 
+containers to efficiently communicate, ensuring data locality.
+* What is Flannel & why we use it ?:
+Flannel is an open-source virtual network project managed by CoreOS network designed for Kubernetes. 
+Each host in a flannel cluster runs an agent called flanneld . It assigns each host a subnet, which 
+acts as the IP address pool for containers running on the host.
+* Difference between Flannel &Calico ?:
+While Flannel is positioned as the simple choice, Calico is best known for its performance, flexibility, and power. ... Unlike Flannel, 
+Calico does not use an overlay network. Instead, Calico configures a layer 3 network that uses the BGP routing protocol to route 
+packets between hosts.
+AWS
+###########
+* What is Amazon RDS ?
+* What is EC2, S3, EBS ?
+* What is VPC & why we require to create VPC ?
+* Is is possible to scale an Ec2 Instance vertically ?
+* How is Amazon RDS, Redshift &DynamoDB different ?
+* How is a spot Instance different from an On-demand Instance ?
+* How Infrastructure As Code processed & executes in AWS ?
+* If your Linux-build server getting slow down, what will you do to check ?:
+1. System Level troubleshooting
+a. RAM related issues
+b. Disk Space related Issues
+c. Disk I/O read write issues
+d. Network Hardware issues
+e. Mount issues
+f. Too Many process running in the machine
+
+2. Application Level troubleshooting
+a. Application is not behaving properly. Hit to Application log file OR application server log file OR 
+web server Log file and try to understand the issues.
+b. zombie process issues – Find out if any as such process which is causing the system performance issues.
+c. Application Log – depends on the application installed, this can be referred and make use of the experience 
+with the project and troubleshoot.
+d. Web Server Log – we can check http, tomcat log as well.
+e. Application Server Log – We can see jboss, weblogic logs to see if the application server response/receive time is the issues for slowness.
+f. Memory Leak of any application – This is one of well known issues in lunux based server due to bad application coding. 
+Many times this can be resolved either by fixing the code or rebooting. But many other solutions are there to apply.
+
+3. Dependent Services troubleshooting
+a. SMTP Response time – SMTP server is not responding faster which is causing delay in response and queue up many processes.
+b. Network issues – There are many System performance issues is dependent on network or service which is depends on the network.
+c. Firewall related issues
+d. Antivirus related issues
+Some of the useful commands for troubleshooting are..
+1. df –k
+2. du –sh
+3. top
+4. uptime
+5. ps –eaf | grep
+6. vmstat
+7. ping
+8. tail –f <logfile>
+9. iostat
+10.free
+11.kill -9
+12.mount
+13.sar
+14.ifconfig eth0 | enable | disable
+15.traceroute
+16.netstat -r
+17.nslookup
+18.route
+* Types of EBS storage ?
+* How to backup a running instance ?
+* How to secure s3 bucket ?
+* What are the security available for users to access S3 ?:
+Encryption:Amazon S3 supports both server-side encryption (with three key management options: SSE-KMS, SSE-C, SSE-S3) and client-side 
+encryption for data uploads. Amazon S3 offers flexible security features to block unauthorized users from accessing your data.
+* How to create AMI ?
+* What are the main components of CloudFormation ?:
+parameters
+resources
+outputs
+mappings
+* What is mapping in cloudformation template ?:
+A Mappings section is a top level section of a CloudFormation template. It is used to define maps, 
+their keys and values which can be then referenced in your template.
+* How is YAML different from JSON ?:
+YAML	                                                                              JSON
+1.Comments are denoted with a hash/number sign.	                              1.Comments are not allowed.
+2.Hierarchy is denoted by using double space characters. 
+Tab characters are not allowed.	                                              2.Objects and Arrays are denoted in braces and brackets.
+3.String quotes are optional but it supports single and double quotes.	      3.Strings must be in double quotes.
+4.Root node can be any of the valid data types.	                              4.Root node must either be an array or an object.
+* Different types of ELB ?:
+Elastic Load Balancing supports the following types of load balancers:
+1.Application Load Balancer
+2.Network Load Balancer
+3.Classic Load Balancer
+* What is autoscaling group ?:
+An auto scaling group is a logical collection of Amazon EC2 instances for automatic scaling purposes. 
+Each Amazon EC2 instance in the group will be subject to the same auto scaling policies. Auto scaling 
+group size refers to the number of instances in the auto scaling group.
+* Which type of ELB is good for application load ?:
+	                                 CLB	                             ALB                                             NLB
+Protocols:                     TCP, SSL/TLS, HTTP, HTTPS	            HTTP, HTTPS	                                    TCP, TLS
+Performance(higher number is slower): 2	                                   3	                                        1 (fastest)
+the ability to handle more traffic
+Host/Path-based routing:          	 No	                                  Yes	                                         No
+Sticky Session:                      Yes                                  Yes                                            No
+(for session-based applications)   (redirect to the same machine)      (redirect to the same target)                     
+Static/Elastic IP:	                 No	                                  No	                                         Yes                                                                                     
+Load balancing to multiple:
+ports on the same instance            No	                               Yes	                                         Yes  
+Configurable idle connection timeout: Yes	                               Yes	                                         No                                                      	                     
+* What is difference between application load balancer & classic load balancer ?:
+* What is metrics in cloudwatch ?:
+Metrics are the fundamental concept in CloudWatch. A metric represents a time-ordered set of data points that are published to CloudWatch. 
+Think of a metric as a variable to monitor, and the data points as representing the values of that variable over time.
+* Is it possible to recover your lost private key ?
+* How can you connect your EC2 Instance if you lost your key ?
+* While connecting to your EC2 instances, what are the possible connection issues one might face ?:
+Some of the most popular connection issues with EC2 instance are:
+Unprotected private key file: You need to have a secure and protected private key for EC2 access. IV. 
+User key not recognized by server: Server may not recognize the user key and deny permission to user.
+Some of the most popular connection issues with EC2 instance are:
+
+I. Connection time out: Connection may time out due to long running processes or low network speed.
+
+II. Permission denied: You may be denied permission to connect to EC2 instance if the host key is not found.
+
+III. Unprotected private key file: You need to have a secure and protected private key for EC2 access.
+
+IV. User key not recognized by server: Server may not recognize the user key and deny permission to user.
+
+V. No supported authentication method: You may be using an authentication method that is not supported by EC2.
+*What is Subnet & how many subnets are there in a VPC ?:
+Subnet is a key component in VPC.
+Currently you can create 200 subnets per VPC.
+if you create a VPC with CIDR block 10.0.0.0/24, it supports 256 IP addresses. You can break this CIDR block into two subnets, 
+each supporting 128 IP addresses. One subnet uses CIDR block 10.0.0.0/25 (for addresses 10.0.0.0 - 10.0.0.127) and the other 
+uses CIDR block 10.0.0.128/25 (for addresses 10.0.0.128 - 10.0.0.255).
+* Why do we make subnets ?
+* What is routing table ?
+* How you can connect a private subnet with a public subnet ?
+* Can VPC peering possible in two different region ?:
+The VPCs can be in different regions (also known as an inter-region VPC peering connection).
+AWS Task
+#############
+Task 1
+Write a script which will based on “Number of requests” metric of the ALB/ELB scale up webapp EC2 instances under the Load Balancer,increase 
+AWS Elasticsearch Nodes count, and change the instance size of a MongoDB EC2 instance from m4.large to m4.xlarge. (without using ASG).
+Task 2
+Architecture Diagram for a PHP/JAVA/Python based application to be hosted on AWS with all mentions like VPC, AWS/any other cloud 
+platform services, well defined network segregation.
+Scripting (SHELL/Python)
+#######################
+Shell Task
+#######################
+Task1
+Bash script to setup a whole LAMP stack, PHP app can be Wordpress and DB can be MySQL. This script should install all 
+components needed for a Wordpress website.
+We should be able to run this script on a local machine or server and after execution of the script it should have 
+Wordpress Running via Nginx/Apache.
+DB user for Wordpress should also be made automatically from within the script and same should be set in Wordpressconf file.
+Task 2
+Bash script to setup a whole JAVA application stack on a server.
+This script should install all components needed for a Java/Grails application.
+Once the script is run it should have the java application running and being served via Nginx on local machine or server. 
+Sample java application can be simply a tomcat war etc
+CI/CD
+#########
+* What is CI &CD ?
+* What is CI/CD pipeline ?
+* Difference between Continuous Delivery &Deployment ?
+* List the important tools & technologies used in Devops ?
+Linux (RHEL)
+############
+* What is Linux ?
+* What are Linux OS Flavors ?
+* Difference between Debian& RPM based OS ?:
+The .deb files are meant for distributions of Linux that derive from Debian (Ubuntu, Linux Mint, etc.). 
+The .rpm files are used primarily by distributions that derive from Redhat based distros (Fedora, CentOS, RHEL) 
+as well as by the openSuSE distro.
+* What is Kernel ?:
+Kernel is the heart of the operating system and facilitates interaction between hardwares and softwares.
+* Explain the boot process of Linux OS ?:
+1. BIOS:
+BIOS stands for Basic Input/Output System. In simple terms, the BIOS loads and executes the Master Boot Record (MBR) boot loader.
+When you first turn on your computer, the BIOS first performs some integrity checks of the HDD or SSD.
+Then, the BIOS searches for, loads, and executes the boot loader program, which can be found in the Master Boot Record (MBR).
+2. MBR:
+MBR stands for Master Boot Record, and is responsible for loading and executing the GRUB boot loader.
+The MBR is located in the 1st sector of the bootable disk, which is typically /dev/hda, or /dev/sda, depending on your hardware. 
+3. GRUB:
+Sometimes called GNU GRUB, which is short for GNU GRand Unified Bootloader, is the typical boot loader for most modern Linux systems.
+The GRUB splash screen is often the first thing you see when you boot your computer. It has a simple menu where you can select some 
+options. If you have multiple kernel images installed, you can use your keyboard to select the one you want your system to boot with. 
+By default, the latest kernel image is selected.
+4. Kernel:
+The kernel is often referred to as the core of any operating system, Linux included. It has complete control over everything in your system.
+In this stage of the boot process, the kernel that was selected by GRUB first mounts the root file system that's specified in the 
+grub.conf file. Then it executes the /sbin/init program, which is always the first program to be executed. You can confirm this 
+with its process id (PID), which should always be 1.
+The kernel then establishes a temporary root file system using Initial RAM Disk (initrd) until the real file system is mounted.
+5. Init:
+At this point, your system executes runlevel programs. At one point it would look for an init file, usually found at /etc/inittab 
+to decide the Linux run level.
+Run level 0 is matched by poweroff.target (and runlevel0.target is a symbolic link to poweroff.target).
+Run level 1 is matched by rescue.target (and runlevel1.target is a symbolic link to rescue.target).
+Run level 3 is emulated by multi-user.target (and runlevel3.target is a symbolic link to multi-user.target).
+Run level 5 is emulated by graphical.target (and runlevel5.target is a symbolic link to graphical.target).
+Run level 6 is emulated by reboot.target (and runlevel6.target is a symbolic link to reboot.target).
+Emergency is matched by emergency.target.
+systemmd will then begin executing runlevel programs.
+6. Runlevel programs:
+Depending on which Linux distribution you have installed, you may be able to see different services getting started. 
+For example, you might catch starting sendmail …. OK.
+These are known as runlevel programs, and are executed from different directories depending on your run level.
+Run level 0 – /etc/rc0.d/
+Run level 1 – /etc/rc1.d/
+Run level 2  – /etc/rc2.d/
+Run level 3  – /etc/rc3.d/
+Run level 4 – /etc/rc4.d/
+Run level 5 – /etc/rc5.d/
+Run level 6 – /etc/rc6.d/
+* How is RHEL different from CentOS ?:
+Redhat is the corporate version based on the progress of that project, and it has slower releases, comes with support, 
+and isn't free. CentOS is basically the community version of Redhat. So it's pretty much identical, but it is free and 
+support comes from the community as opposed to Redhat itself.
+* What is the Latest version of RHEL ?:
+RHEL 8
+* What is Grub ?:
+GRUB is a complete program for loading and managing the boot process. It is the most common bootloader for Linux distributions. 
+A bootloader is the first software that runs when a computer starts. It loads the kernel of the operating system and then 
+the kernel initializes the rest of the operating system: shell, display manager, desktop environment, etc.
+* Difference between Grub &Grub2 ?:
+GRUB and GRUB2 are two different versions. GRUB2 is considered as default boot loader of Ubuntu whereas GRUB is generally used 
+in RHEL older versions. When started, GRUB2 mainly presents a menu and waits for some input from users. It generally transfers 
+control to our operating system kernel.
+* What is boot loader ?:
+A bootloader is software that is responsible for booting a computer. ... The computer first executes a relatively small program 
+stored in read-only memory (ROM) along with a small amount of needed data, to access the nonvolatile device or devices from which 
+the operating system programs and data can be loaded into RAM.
+* Do you think the boot process in RHEL 7 is faster than RHEL 6 ? If yes, How ?
+* What is .rpm & .deb ?
+* What is RPM ?
+* What is YUM ?
+* Different methods to install the rpm based packages ?
+* What is Bash ?
+* What is SHell ?
+* How many types of SHells are there ? * Explain the daily used basic commands like cp, mv, rm ?
+* What is the significance of touch command ?
+* In how many ways you can create a file ?
+* How to delete the content from a file ?
+* Explain the process/work behind hitting the google.com
+ ?how you access google.com
+ ?
+* How many types of permissions are there ? What is chmod ?
+* What is sticky bit  ?
+* What is ACLs ?
+* What is SetGID, SetUID&Stickybit ?
+* Location where all the user information are stored ?
+* File where user password are stored ?
+* What is the default permission of a file ?
+* What is the significance of -rvf ?
+* What is PV, VG &LV ?
+* What are the types of file system ?
+* What is XFS ?
+* Can we reduce XFS file system ?
+* How can we extend LV ?
+* Command to check running process ?
+* Command to check RAM usage ?
+* Command to check Disk usage ?
+* Difference between ps -aux & top command ?
+* What are the ways to check CPU usage ?
+* How to check CPU details ?
+* Explain the steps to create a partition & how to format with file system ?
+* Explain the steps to create LV ?
+* Explain steps to reduce XFS & EXT files systems ?
+* Significance of .bashrcfile ?
+* How you check the kernel version ?
+* How you check the Red hat release version ?
+* Significance of resolv.conffile ?
+* What is DNS ? How you resolve DNS ? Types of DNS records ?
+* Difference between Nginx& HTTP Server ?
+* Port no of HTTP, FTP, SSH, HTTPS ?
+* What is SSH ?  How you generate SSH-keys ?
+* What is Private & public key ? How they authenticate ?
+* Configuration file of SSH ?
+* Configuration file of HTTP ?
+* What is Virtual Hosting ? How you configure virtual hosting ?
+* Explain ifconfigcommand ?
+* Difference between IPv4 &IPv6 ?
+* What is MAC address ?can we change the physical address ?
+* How to check system uptime ?
+* How to check memory information ?
+* What is SWAP ?
+* What is the exact memory free in your system ?
+* What is cache memory ?
+* What if you can do rm -rvf/ ?
+* Kinds of permission in Linux ?
+* What is vim &vi ?
+* What is pipe | ?
+* What is grepcommand ?
+* What Find command does ?
+* How to redirect commands output ?
+* What is systemd in Linux ?
+* What does systemctldo ?
+* If you run a command like nautilus in terminal, whether it will block your terminal or not ?
+* If yes, whats the solution of this to not to unblock the terminal without closing the command application?
+* What is rsyslog ?
+* What is SSH-tunnel ?
+* How to set history size ?
+* How to extend VG ?
+* What are logical & extended partitions ?
+* Explain the steps to reset root password at boot time ?
+* What are run-levels ? How many types of run levels are there ?
+* How we change the run level ?
+* How to check the logs ?
+* Difference between Journalctl& tail command ?
+* What does the subscription-manager do ?
+* How to archive a file ?
+* What is umask ?
+* How to kill a process ?
+* How to assign IP address manually ?
+* How to assign static IP address to a system ?
+* Explain the different types of Linux process states ?
+* What is a Zombie process ?
+* What is KVM ?
+* What is hypervisor ?
+* Difference between MBR &GPT ?
+* How you can mount a file system permanently ?
+* What is cron ? How to setup a cronjob ?
+* What is Kickstart ?
+* How to create a network bridge in Linux ?
+* Difference between iptables&firewalld
+* What is SElinux ?
+* What is ISCSI &targetcli ?
+* Difference between NFS &SAMBA ?
+* What is nfsnobody ?
+* What is SSHFS ?
+* What is Kerberos ?
+* How to secure NFS with Kerberos ?
+* What is the difference between telnet &SSH ?
+* What is DHCP ?
+* What is Kickstartfile ?
+* What is NTP Server ? How to configure NTP ?
+ Monitoring
+############
+* Why we use monitoring ?
+* What are the different tools & technologies for monitoring ?
+* How we monitor our applications & servers differently  ?
+* What is Prometheus ? How is different from other monitoring tools ?
+* What is ELK stack ?
+* Why we use Grafana ?
+* How we query different outputs in Prometheus ?
+* What type of graph can be implemented in Grafana ?
+[24/07, 4:48 pm] Raghu: Difference between docker and docker swarm.
+How to build an image.
+Difference between entrypoint and execute.
+What are the layers in docker. Why they are used for.
+If u have modified any file will it create a new layer in docker.
+How to move to a particular layer in docker.
+How to integrate git with jenkins.
+Attributes of pom.xml
+How many types of files you have worked upon.
+How to see output of a build.
+What is tomcat.
+Where you can see logs of tomcat. Directory structure of tomcat.
+How maven will know about sonarqube.
+How do you build at a particular time in jenkins.
+How to schedule in linux.
+Command for running sonarqube report.
+What is ansible.
+How to install software for a particular group of hosts.
+Why u choosen ansible, how it is different from other tools.
+Any other tool same as tomcat.
+Any scripting language you know.
+How to get the last coloumn of a cfe file that too which are not blank.
+What is the field separator in a cfe file?
+How to search a particular string from any of the files/directories or sub dieectories recursively.
+  Suppose u r having a file in which 4 to 5 places a string ex abc is present. Now u have to replace the lines above the matching string.
+Processes to follow before committing any change in production environment.
+Have u committed any changes in git and for what.
+You have to create a file with attributes of ex, a student and send report to higher management. 
+Suppose you have to save a very large output in a file, and to send it in a good format to team how will you do that?
+How to save data in docker, persistent volume?
+OpenShift
+###########
+* What is Openshift ?
+* Difference between Openshift&Kubernetes ?
+* What is Services Layer ?
+* How to expose a service in Openshift ?
+* What are the 3 components of any created project ?
+* What is router in default or in any project while creating project ?
+* What do you mean by identity provider in Openshift?
+* How do you create a New user identity ?
+* Where is the user identity located ?
+* What is project in Openshift ?
+* What are the types of permissions/role bindings in Openshift ?
+* How to check the permission of user ?
+* How to describe anything in Openshift ?
+* How to check no of projects ?
+* How to assign a role/permission to a user ?
+* What is clusterrolebinding in openshift ?
+* What is the process/working of POD creation ?
+* What is Builder POD ?
+* What is deployerPOD ?
+* How to create a New application POD ?
+* How to check logs of POD ?
+* What is Deployment Configuration & why we need DC ?
+* What is SVC & why we need SVC ?
+* What is RC (Replication Controller) ?
+* How to check DC of POD & how to edit DC ?
+* How to create route ?
+* How to expose svc ?
+* How to do rollout ?
+* How to increase replica ?
+* What is Source to Image in Openshift ?
+* What is builder image ?
+* What are the process to create source to image ?
+* How to give the Cluster role/permission to the user ?
+* How to create secure route ?
+* What is PV &PVC ?
+* What are access modes in PV ?
+* What is node selector ?
+* What are the two regions in projects ?
+* Difference between template & Deployment Configuration ?
+* How to migrate whole cluster to another ?
+* How to manually migrate container ?
